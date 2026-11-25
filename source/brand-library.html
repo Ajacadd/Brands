@@ -1,0 +1,1271 @@
+<title>مكتبة هوية الأجيال</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Somar Sans — the academy's secondary typeface, served from the library's own uploaded font files */
+@font-face{font-family:"Somar Sans";font-weight:300;font-display:swap;src:url(/_blob/3deea33c4641b370714b9a2a1b7df593) format("opentype")}
+@font-face{font-family:"Somar Sans";font-weight:400;font-display:swap;src:url(/_blob/c7f9821699ef3b466eb4bfeef79e1d36) format("opentype")}
+@font-face{font-family:"Somar Sans";font-weight:500;font-display:swap;src:url(/_blob/44659f855c27442067d6a6ba9024c4cb) format("opentype")}
+@font-face{font-family:"Somar Sans";font-weight:600;font-display:swap;src:url(/_blob/0862cfa70cbe1d8460a9e5d90b6976d8) format("opentype")}
+@font-face{font-family:"Somar Sans";font-weight:700;font-display:swap;src:url(/_blob/725445088e42b1790a8d77621b0ce7e0) format("opentype")}
+@font-face{font-family:"Somar Sans";font-weight:800;font-display:swap;src:url(/_blob/e7dd7a7e9a39872f9584737a274b23ec) format("opentype")}
+/* Layout: light academy sidebar (identity index) + scrolling brand sheet. Academy identity: navy #003375 leads, pink #F280AA highlights, cyan #38B5DA supports; Alexandria for headings, Somar Sans for text */
+:root{
+  --bg:#F4F4F7; --surface:#FFFFFF; --sunk:#ECEDF3; --ink:#003375; --text:#1F2A44; --muted:#6D6E71; --line:#E6E7EE;
+  --accent:#003375; --accent-ink:#FFFFFF; --accent-soft:#E6EEF8;
+  --pink:#F280AA; --pink-soft:#FDE6EF; --pink-ink:#B03A6A; --cyan:#38B5DA; --cream:#FDF2E3;
+  --side:#FFFFFF;
+  --danger:#C42B5A; --ok:#1A9D6B;
+  --check-a:#FFFFFF; --check-b:#ECEDF3; --mark:#B1B3B6;
+  --f-display:"Alexandria","Somar Sans","Segoe UI",Tahoma,sans-serif;
+  --f-body:"Somar Sans","Alexandria","Segoe UI",Tahoma,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --r:16px;
+  color-scheme:light;
+}
+/* light-only by request: no dark theme */
+
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:15.5px;line-height:1.75;font-weight:500}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--side)}
+h1,h2,h3{color:var(--ink)}
+*{box-sizing:border-box}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+.mono,[dir="ltr"].mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+#app{display:grid;grid-template-columns:272px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:env(safe-area-inset-top,0px);height:calc(100vh - env(safe-area-inset-top,0px));overflow:auto;background:var(--side);color:var(--ink);border-inline-end:1px solid var(--line);
+  padding-block:24px;padding-right:max(18px,env(safe-area-inset-right,0px));padding-left:18px;display:flex;flex-direction:column;gap:18px}
+.brandmark{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink)}
+.brandmark img{height:48px;width:auto;align-self:flex-start}
+.brandmark b{display:block;font-family:var(--f-display);font-size:17px;line-height:1.2;font-weight:700}
+.brandmark small{color:var(--pink-ink);font-size:12.5px;font-family:var(--f-body)}
+.brandmark .fallback{font-family:var(--f-display);font-weight:800;font-size:18px}
+.search{position:relative}
+.search input{width:100%;padding:9px 14px;border:1px solid var(--line);border-radius:99px;background:var(--bg);color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+#nav{display:flex;flex-direction:column;gap:2px}
+.nav-i{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:99px;text-decoration:none;color:var(--text);font-size:14px;min-width:0}
+.nav-i span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-i:hover{background:var(--sunk);color:var(--ink)}
+.nav-i.on{background:var(--pink);color:#fff;font-weight:600}
+.nav-i i{width:10px;height:10px;border-radius:3px;flex:none;background:var(--line);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.nav-i.on i{box-shadow:0 0 0 1.5px #fff}
+.nav-h{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:0 12px 4px;font-size:12px;letter-spacing:.03em;color:var(--pink-ink);font-weight:600;font-family:var(--f-display)}
+.nav-h .mono{color:var(--muted)}
+.nav-h a{text-decoration:none}
+.nav-h a:hover{color:var(--ink)}
+.nav-empty{padding:4px 12px;color:var(--muted);font-size:13px}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.side-foot .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.side-foot .who{font-size:12px;color:var(--muted)}
+
+main{min-width:0;padding-block:28px 72px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:28px}
+.wrap{max-width:1120px;margin-inline:auto;display:flex;flex-direction:column;gap:34px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:99px;color:var(--ink);border:1px solid var(--line);background:var(--surface);cursor:pointer;text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.danger{color:var(--danger);border-color:currentColor;background:transparent}
+.btn[disabled]{opacity:.55;cursor:progress}
+.icon-btn{border:0;background:transparent;cursor:pointer;width:32px;height:32px;border-radius:7px;display:grid;place-items:center;color:var(--muted)}
+.icon-btn:hover{background:var(--sunk);color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+.intro{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.intro h1{font-size:clamp(24px,3vw,32px)}
+.intro p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+.eyebrow{font-size:13px;letter-spacing:.03em;color:var(--pink-ink);font-weight:600;font-family:var(--f-display)}
+
+/* home hero — light card, academy logo with slogan */
+.hero{position:relative;overflow:hidden;border-radius:20px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--pink);
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center;padding:clamp(24px,4vw,44px)}
+.hero-txt{position:relative;display:flex;flex-direction:column;gap:10px}
+.hero h1{font-size:clamp(26px,3.6vw,40px);font-weight:800}
+.hero p{margin:0;color:var(--muted);max-width:56ch}
+.hero-stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px;font-size:14px;color:var(--muted)}
+.hero-stats b{color:var(--ink);font-size:20px;font-family:var(--f-display);margin-inline-end:4px}
+.hero-mark{position:relative;display:flex;justify-content:center;align-items:center}
+.hero-mark img{width:min(300px,85%)}
+
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.sec-h h2{font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
+.sec-h h2::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--pink);flex:none}
+.sec-h .count{color:var(--muted);font-size:13px;font-family:var(--f-mono)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--ink);transition:border-color .15s, transform .15s}
+.card:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(1,26,74,.45)}
+.card-art{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;padding:18px;border-bottom:4px solid var(--c,var(--line));background:var(--check-a)}
+.card-art{position:relative;overflow:hidden}
+.card-art img{position:absolute;inset:18px;width:calc(100% - 36px);height:calc(100% - 36px);object-fit:contain}
+.mono-init{font-family:var(--f-display);font-weight:700;font-size:34px;color:var(--c,var(--muted))}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card-body h3{font-size:17px}
+.card-body p{margin:0;color:var(--muted);font-size:13.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dots{display:flex;gap:4px;margin-top:auto;padding-top:6px}
+.dots span{width:18px;height:18px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.kind{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:99px;background:var(--pink-soft);color:var(--pink-ink);width:fit-content}
+.card.wide{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr)}
+.card.wide .card-art{aspect-ratio:auto;min-height:190px;border-bottom:0;border-inline-start:6px solid var(--c,var(--line))}
+.card.wide .card-body{padding:22px 24px;gap:8px}
+.card.wide h3{font-size:24px}
+.card.wide p{-webkit-line-clamp:4}
+
+.empty{border:1.5px dashed var(--line);border-radius:var(--r);padding:28px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:12px;align-items:center}
+.empty b{color:var(--ink);font-family:var(--f-display);font-weight:500}
+.notice{padding:16px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+
+/* brand sheet */
+.band{background:var(--band);color:var(--on);border-radius:14px;padding:26px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center}
+.band-logo{width:150px;height:150px;border-radius:12px;background:#fff;display:grid;place-items:center;padding:16px;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.band-logo{position:relative;overflow:hidden}
+.band-logo img{position:absolute;inset:16px;width:calc(100% - 32px);height:calc(100% - 32px);object-fit:contain}
+.band-logo .mono-init{color:var(--band)}
+.band .kind{background:rgba(255,255,255,.18);color:inherit;box-shadow:inset 0 0 0 1px currentColor}
+.band h1{font-size:clamp(26px,4vw,40px);margin-top:8px;color:inherit;font-weight:800}
+.band .en{margin:2px 0 0;opacity:.8;font-size:14px;letter-spacing:.02em}
+.band .sum{margin:10px 0 0;max-width:68ch;opacity:.92;white-space:pre-line}
+.band-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.band-actions .btn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:inherit}
+.band[data-light] .band-actions .btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.25)}
+.band-meta{margin-top:10px;font-size:12.5px;opacity:.75}
+.parent-note{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.parent-note a{color:var(--accent)}
+
+.subnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;overflow-x:auto;padding-block:8px;margin-block:-20px -10px;border-bottom:1px solid var(--line)}
+.subnav button{border:0;background:transparent;padding:6px 12px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:14px;white-space:nowrap}
+.subnav button:hover{background:var(--sunk);color:var(--ink)}
+section{scroll-margin-top:70px}
+
+/* logo tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
+.tile-art{position:relative;aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;padding:28px;border-radius:var(--r) var(--r) 0 0;overflow:hidden}
+.tile-art img{position:absolute;inset:28px;width:calc(100% - 56px);height:calc(100% - 56px);object-fit:contain}
+.tile-art::after{content:"";position:absolute;inset:9px;pointer-events:none;background:
+  linear-gradient(var(--mark),var(--mark)) top right/14px 1px no-repeat,linear-gradient(var(--mark),var(--mark)) top right/1px 14px no-repeat,
+  linear-gradient(var(--mark),var(--mark)) top left/14px 1px no-repeat,linear-gradient(var(--mark),var(--mark)) top left/1px 14px no-repeat,
+  linear-gradient(var(--mark),var(--mark)) bottom right/14px 1px no-repeat,linear-gradient(var(--mark),var(--mark)) bottom right/1px 14px no-repeat,
+  linear-gradient(var(--mark),var(--mark)) bottom left/14px 1px no-repeat,linear-gradient(var(--mark),var(--mark)) bottom left/1px 14px no-repeat}
+.bg-checker{background:repeating-conic-gradient(var(--check-b) 0 25%,var(--check-a) 0 50%) 0 0/16px 16px}
+.bg-light{background:#FFFFFF;--mark:#B7BCC6}
+.bg-dark{background:#121318;--mark:#4A4F5A}
+.bg-brand{background:var(--band)}
+.ext-label{font-family:var(--f-mono);font-size:26px;font-weight:500;color:var(--muted);border:1.5px solid var(--line);border-radius:8px;padding:10px 16px;background:var(--surface);position:relative}
+.tile-meta{padding:12px 14px 4px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile-meta strong{font-weight:600;overflow-wrap:anywhere}
+.tile-meta .v{color:var(--muted);font-size:13px}
+.fmt{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tile-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 14px 14px;margin-top:auto}
+.tile-actions .sp{flex:1}
+.badge{font-size:11px;padding:1px 7px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+details.menu{position:relative}
+details.menu summary{list-style:none}
+details.menu summary::-webkit-details-marker{display:none}
+details.menu .pop{position:absolute;z-index:20;inset-inline-start:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:9px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:6px;min-width:210px;display:flex;flex-direction:column}
+details.menu .pop button,details.menu .pop a{border:0;background:transparent;text-align:start;padding:7px 10px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;text-decoration:none;font-size:13.5px}
+details.menu .pop button:hover,details.menu .pop a:hover{background:var(--sunk)}
+details.menu .pop small{color:var(--muted);font-family:var(--f-mono)}
+details.menu .pop hr{border:0;border-top:1px solid var(--line);margin:4px 2px}
+
+/* swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.swatch{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.chip{border:0;height:120px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:12px 14px;text-align:start}
+.chip .hx{font-family:var(--f-mono);font-size:20px;font-weight:500}
+.chip small{opacity:.75;font-size:12px}
+.sw-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px}
+.sw-body header{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.sw-body strong{font-weight:600}
+.codes{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 10px;align-items:center;font-size:13px;margin:0}
+.codes dt{color:var(--muted);font-size:11.5px;font-weight:600;letter-spacing:.04em}
+.codes dd{margin:0;font-family:var(--f-mono);direction:ltr;text-align:right;overflow-wrap:anywhere}
+.codes button{border:0;background:transparent;color:var(--accent);cursor:pointer;font-size:12px;padding:2px 4px;border-radius:5px}
+.codes button:hover{background:var(--accent-soft)}
+.palette-strip{display:flex;height:14px;border-radius:7px;overflow:hidden;margin-bottom:14px}
+.palette-strip span{flex:1}
+
+/* font weights + download packs */
+.wchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.wchip{font-family:var(--f-mono);font-size:11.5px;padding:2px 9px;border-radius:99px;background:var(--sunk);color:var(--muted)}
+.packs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.pack{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;padding:16px 18px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);cursor:pointer;min-width:0;transition:border-color .15s,transform .15s}
+.pack:hover:not([disabled]){border-color:var(--pink);transform:translateY(-2px)}
+.pack[disabled]{opacity:.5;cursor:not-allowed}
+.pack .pk-t{font-family:var(--f-display);font-weight:700;color:var(--ink);font-size:16px}
+.pack .pk-d{font-size:13px;color:var(--muted)}
+.pack .pk-f{margin-top:6px;font-family:var(--f-mono);font-size:12px;color:var(--pink-ink);font-weight:500}
+.pack.main{grid-column:1/-1;background:var(--accent);border-color:var(--accent)}
+.pack.main .pk-t,.pack.main .pk-d,.pack.main .pk-f{color:#fff}
+.pack.main .pk-t{font-size:18px}
+
+/* gradients */
+.grads{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.grad{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.grad-h{display:flex;flex-direction:column}
+.grad-h strong{font-weight:600;color:var(--ink)}
+.grad-h span{font-size:13px;color:var(--muted)}
+.grad-bar{height:96px;border-radius:12px;display:flex;justify-content:space-between;align-items:flex-end;padding:10px 12px;direction:ltr}
+.grad-bar button{border:0;background:rgba(255,255,255,.18);backdrop-filter:blur(2px);font-family:var(--f-mono);font-size:12.5px;padding:3px 9px;border-radius:99px;cursor:pointer}
+.grad-bar button:hover{background:rgba(255,255,255,.35)}
+.grad-bar .deg{font-size:11.5px;opacity:.8;align-self:flex-start}
+.ed-row.g{grid-template-columns:56px minmax(0,1fr) minmax(0,1fr) 150px 150px 70px auto;align-items:center}
+.ed-row.g .gprev{height:38px;border-radius:8px}
+.gpair{display:flex;gap:4px;min-width:0}
+.gpair input[type=color]{width:38px;height:38px;padding:2px;flex:none}
+@media (max-width:900px){.ed-row.g{grid-template-columns:56px minmax(0,1fr) auto}.ed-row.g > input,.ed-row.g .gpair{grid-column:1/-1}}
+
+/* fonts */
+.fonts{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.font{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.font .spec-ar{font-size:30px;line-height:1.35;overflow-wrap:anywhere}
+.font .spec-lt{font-size:18px;color:var(--muted);direction:ltr;text-align:right;overflow-wrap:anywhere}
+.font .meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.font .meta strong{font-family:var(--f-mono);font-weight:500;direction:ltr}
+.font p{margin:0;color:var(--muted);font-size:13.5px}
+
+/* rules */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.rule h3{font-size:15px;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.rule .txt{white-space:pre-line;margin:0;color:var(--ink)}
+.rule ul{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:4px}
+.rule.do h3::before,.rule.dont h3::before{content:"";width:10px;height:10px;border-radius:50%}
+.rule.do h3::before{background:var(--ok)}
+.rule.dont h3::before{background:var(--danger)}
+.muted{color:var(--muted)}
+
+/* files */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px;font-size:13px;cursor:pointer}
+.filters button.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.flist{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.frow{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.frow:first-child{border-top:0}
+.fthumb{width:56px;height:56px;border-radius:8px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--line)}
+.fthumb img{max-width:100%;max-height:100%;object-fit:contain}
+.fthumb span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.finfo{min-width:0;display:flex;flex-direction:column}
+.finfo strong{font-weight:600;overflow-wrap:anywhere}
+.finfo small{color:var(--muted)}
+.finfo .note{font-size:13px;color:var(--muted)}
+
+/* prompt */
+.prompt-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.prompt-bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--sunk)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--muted)}
+.tabs button.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 0 0 1px var(--line)}
+#promptText{margin:0;padding:18px;white-space:pre-wrap;font-family:var(--f-body);font-size:14px;line-height:1.8;max-height:520px;overflow:auto}
+
+/* modal */
+.modal-wrap{position:fixed;inset:0;z-index:50;background:rgba(10,12,16,.55);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal{background:var(--surface);color:var(--ink);border-radius:14px;width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal.wide{width:min(920px,100%)}
+.modal header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal header h2{font-size:18px}
+.modal-body{padding:18px 20px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.modal footer{display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.modal-err{margin:0 20px;padding:10px 12px;border-radius:8px;background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger);font-size:13.5px}
+.field{display:flex;flex-direction:column;gap:5px;font-size:13.5px;min-width:0}
+.field > span{font-weight:600}
+.field small{color:var(--muted);font-weight:400}
+.field input,.field select,.field textarea,.ed-row input,.ed-row select,.ed-row textarea{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);width:100%;min-width:0}
+.field textarea{resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{margin:0;color:var(--muted);font-size:13px}
+.ed-list{display:flex;flex-direction:column;gap:10px}
+.ed-row{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.ed-row.c{grid-template-columns:44px 110px minmax(0,1fr) 120px 140px 110px auto;align-items:center}
+.ed-row.c input[type=color]{padding:2px;height:38px;width:44px}
+.ed-row.f{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ed-row.f .full{grid-column:1/-1}
+.row-tools{display:flex;gap:2px;justify-content:flex-end}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+.seg label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.seg input{accent-color:var(--accent)}
+.drop{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;text-align:center;border:1.5px dashed var(--line);border-radius:10px;padding:22px;cursor:pointer;position:relative}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop small{color:var(--muted)}
+.picked{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.picked li{display:flex;justify-content:space-between;gap:8px;padding:6px 10px;border-radius:7px;background:var(--bg)}
+.picked li.bad{color:var(--danger)}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:13.5px}
+.check input{margin-top:4px;accent-color:var(--accent)}
+.danger-zone{border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:9px;font-size:14px;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:calc(100% - 32px)}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:900px){
+  #app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;border-inline-end:0;border-bottom:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));gap:12px}
+  #nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  .nav-h{display:none}
+  .nav-i{white-space:nowrap;border:1px solid var(--line);flex:none}
+  .nav-i.on{border-color:var(--pink)}
+  .brandmark{flex-direction:row;align-items:center;gap:12px}
+  .brandmark img{height:38px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero-mark{order:-1;justify-content:flex-start}
+  .hero-mark img{width:min(220px,65%)}
+  .nav-empty{display:none}
+  .side-foot{flex-direction:row;flex-wrap:wrap;margin-top:0}
+  .side-foot .who{display:none}
+  main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+  .card.wide{grid-template-columns:minmax(0,1fr)}
+  .card.wide .card-art{border-inline-start:0;border-bottom:4px solid var(--c,var(--line));min-height:150px}
+  .ed-row.c{grid-template-columns:44px minmax(0,1fr) auto}
+  .ed-row.c [data-f=name],.ed-row.c select,.ed-row.c [data-f=cmyk],.ed-row.c [data-f=pantone]{grid-column:1/-1}
+}
+@media (max-width:560px){
+  .band{grid-template-columns:minmax(0,1fr);padding:20px}
+  .band-logo{width:110px;height:110px}
+  .two,.ed-row.f{grid-template-columns:minmax(0,1fr)}
+  .frow{grid-template-columns:48px minmax(0,1fr)}
+  .frow .row{grid-column:1/-1}
+  .fonts{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div id="app" dir="rtl" lang="ar">
+  <aside class="side">
+    <a class="brandmark" href="#home">
+      <img src="/_blob/2d50c00db451008d1a427d618cfbe42d" alt="أكاديمية هندسة الأجيال" onerror="this.outerHTML='&lt;span class=&quot;fallback&quot;&gt;هندسة الأجيال&lt;/span&gt;'">
+      <span><b>مكتبة الهوية</b><small>مرجع فريق التصميم</small></span>
+    </a>
+    <div class="search"><input id="q" type="search" placeholder="ابحث في البرامج والمنتجات" aria-label="بحث"></div>
+    <nav id="nav" aria-label="الهويات"></nav>
+    <div class="side-foot" id="sidefoot"></div>
+  </aside>
+  <main><div class="wrap" id="main"></div></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(() => {
+const KIND = {master:"الهوية الأم", program:"برنامج", project:"مشروع / فريق", product:"منتج"};
+const SECT = {
+  program:{title:"البرامج", one:"برنامج", hash:"programs", prefix:"p", newTitle:"برنامج جديد", empty:"لا توجد برامج بعد",
+    hint:"عند إطلاق برنامج جديد أضف صفحته وارفع ملفات هويته.", eyebrow:"صفحة لكل برنامج",
+    intro:"برامج الأكاديمية ودوراتها. لكل برنامج هويته المشتقة من الهوية الأم: شعارات وألوان وخطوط بفروق محسوبة لا تخرج عن عباءة الأكاديمية."},
+  project:{title:"المشاريع والفرق", one:"مشروع", hash:"projects", prefix:"j", newTitle:"مشروع أو فريق جديد", empty:"لا توجد مشاريع أو فرق بعد",
+    hint:"المشاريع والفرق التي تشرف عليها الأكاديمية، مثل فريق الاستشارات ومشروع رواحل.", eyebrow:"بإشراف الأكاديمية",
+    intro:"مشاريع وفرق مستقلة تشرف عليها الأكاديمية. لكل منها هوية خاصة تبقى منسجمة مع الهوية الأم."},
+  product:{title:"المنتجات", one:"منتج", hash:"products", prefix:"d", newTitle:"منتج جديد", empty:"لا توجد منتجات بعد",
+    hint:"أضف كل منتج بصفحة خاصة لشعاراته وألوانه وضوابطه.", eyebrow:"صفحة لكل منتج",
+    intro:"منتجات الأكاديمية وهوياتها، بالضوابط نفسها المرتبطة بالهوية الأم."}
+};
+const KIND_ORDER = ["program","project","product"];
+/* academy identity assets used by the site chrome */
+const SITE = {logoSlogan:"c4a04a62bee0056710d8e037bc0cef72"};
+const COLOR_ROLES = ["أساسي","ثانوي","مساعد","خلفية","نصوص","تنبيه"];
+const FONT_ROLES = ["العناوين","النصوص","الأرقام والبيانات","عرضي / زخرفي","النصوص الإنجليزية"];
+const CATS = {logo:"الشعارات", element:"عناصر وأنماط", image:"صور", template:"قوالب ونماذج", guide:"دليل الهوية", font:"ملفات الخطوط", source:"ملفات مصدرية", other:"أخرى"};
+const TYPES = {png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",svg:"image/svg+xml",mp4:"video/mp4",webm:"video/webm",pdf:"application/pdf",woff2:"font/woff2",woff:"font/woff",ttf:"font/ttf",otf:"font/otf",txt:"text/plain",md:"text/markdown",json:"application/json",csv:"text/csv"};
+const FONT_EXT = new Set(["woff2","woff","ttf","otf"]);
+const SAVE_EXT = new Set("gif png jpg jpeg webp mp4 webm txt json md ttf svg pdf csv zip".split(" "));
+const MB = 1048576;
+const limitFor = ext => ext === "svg" ? 2*MB : 20*MB;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const S = {db:null,user:null,assets:null,downloads:null,sample:null,canEdit:false,
+  brands:[],loaded:false,dbState:"loading",files:[],filesFor:null,filesUnsub:null,filesLoaded:false,
+  q:"",fileFilter:"all",promptView:null,aiDraft:null,aiBusy:false,tileBg:{}};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const extOf = n => { const p = String(n||"").split("."); return p.length > 1 ? p.pop().toLowerCase() : ""; };
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const OFF = window.OFFLINE || null; /* set only in the standalone exported copy */
+const blobUrl = id => (OFF && OFF.assets && OFF.assets[id]) || "/_blob/" + id;
+const now = () => new Date().toISOString();
+const fmtSize = b => !b ? "" : b < 1024*1024 ? Math.max(1,Math.round(b/1024)) + " KB" : (b/MB).toFixed(1) + " MB";
+const fmtDate = s => { try { return new Date(s).toLocaleDateString("ar-EG-u-nu-latn",{year:"numeric",month:"long",day:"numeric"}); } catch { return ""; } };
+const lines = t => String(t||"").split(/\n+/).map(s => s.replace(/^[-•*\s]+/,"").trim()).filter(Boolean);
+const initials = n => String(n||"؟").trim().split(/\s+/).slice(0,2).map(w => w[0]).join("");
+
+/* color math */
+function hexNorm(h){ h = String(h||"").trim().replace(/^#/,""); if(/^[0-9a-f]{3}$/i.test(h)) h = h.split("").map(c=>c+c).join(""); return /^[0-9a-f]{6}$/i.test(h) ? "#"+h.toUpperCase() : null; }
+const rgbOf = h => { const n = parseInt(h.slice(1),16); return [n>>16&255, n>>8&255, n&255]; };
+function cmykOf([r,g,b]){ r/=255; g/=255; b/=255; const k = 1-Math.max(r,g,b); if(k >= 1) return [0,0,0,100]; return [(1-r-k)/(1-k),(1-g-k)/(1-k),(1-b-k)/(1-k),k].map(v=>Math.round(v*100)); }
+function hslOf([r,g,b]){ r/=255; g/=255; b/=255; const mx=Math.max(r,g,b), mn=Math.min(r,g,b); let h=0,s=0; const l=(mx+mn)/2;
+  if(mx!==mn){ const d=mx-mn; s = l>.5 ? d/(2-mx-mn) : d/(mx+mn); h = mx===r ? (g-b)/d+(g<b?6:0) : mx===g ? (b-r)/d+2 : (r-g)/d+4; h*=60; }
+  return [Math.round(h), Math.round(s*100), Math.round(l*100)]; }
+function lum(h){ const c = rgbOf(h).map(v => { v/=255; return v <= .03928 ? v/12.92 : Math.pow((v+.055)/1.055,2.4); }); return .2126*c[0]+.7152*c[1]+.0722*c[2]; }
+const onColor = h => lum(h) > .42 ? "#111318" : "#FFFFFF";
+function codesOf(c){ const hex = hexNorm(c.hex); if(!hex) return null; const rgb = rgbOf(hex); const cm = cmykOf(rgb); const hs = hslOf(rgb);
+  return { hex, rgb:`${rgb.join(", ")}`, cmyk: c.cmyk ? c.cmyk : `${cm.join(", ")}`, cmykAuto: !c.cmyk, hsl:`${hs[0]}°, ${hs[1]}%, ${hs[2]}%`, pantone:c.pantone||"" }; }
+
+/* brands */
+const byId = id => S.brands.find(b => b.id === id);
+const master = () => byId("master") || S.brands.find(b => b.kind === "master");
+const primaryOf = b => { const c = (b?.colors||[]).map(x=>hexNorm(x.hex)).find(Boolean); return c || null; };
+const kindRank = {master:0, program:1, project:2, product:3};
+const sortBrands = (a,b) => (kindRank[a.kind]??3)-(kindRank[b.kind]??3) || (a.order||0)-(b.order||0) || String(a.name).localeCompare(String(b.name),"ar");
+
+function route(){ const h = decodeURIComponent(location.hash.slice(1)); if(h.startsWith("b-")) return {view:"brand", id:h.slice(2)}; if(h === "programs" || h === "products" || h === "projects") return {view:h}; return {view:"home"}; }
+const curBrand = () => { const r = route(); return r.view === "brand" ? byId(r.id) : null; };
+
+/* toast & copy */
+let toastT;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove("on"), 2400); }
+function copy(text, label){
+  const done = ok => toast(ok ? `تم نسخ ${label || text}` : "تعذّر النسخ التلقائي، حدّد النص وانسخه يدويًا");
+  const fallback = () => { const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly",""); ta.style.cssText = "position:fixed;opacity:0;top:0"; document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand("copy"); } catch {} ta.remove(); done(ok); };
+  try { navigator.clipboard.writeText(text).then(()=>done(true), fallback); } catch { fallback(); }
+}
+function msgFor(e){
+  const c = e && e.code;
+  return ({too_large:"حجم الملف أكبر من الحد المسموح (20 ميجابايت، و2 للـ SVG). ارفعه على درايف وأضف الرابط.",
+    unsupported_type:"صيغة الملف غير مدعومة للرفع المباشر. ارفعه على درايف وأضف الرابط.",
+    quota_or_state:"امتلأت مساحة التخزين أو المكتبة غير متاحة الآن. احذف ملفات قديمة أو استخدم رابط درايف.",
+    quota_exceeded:"امتلأت قاعدة البيانات. احذف عناصر قديمة ثم أعد المحاولة.",
+    invalid_argument:"لا تملك صلاحية التعديل، أو أن البيانات غير صالحة.",
+    rate_limited:"طلبات كثيرة في وقت قصير. انتظر قليلًا ثم أعد المحاولة.",
+    resource_exhausted:"طلبات كثيرة في وقت قصير. انتظر قليلًا ثم أعد المحاولة.",
+    not_granted:"هذا الإجراء غير متاح لك في هذا العرض."})[c] || (e && e.userMsg) || "تعذّر الحفظ. تحقّق من الاتصال ثم أعد المحاولة.";
+}
+
+/* fonts */
+const loadedFonts = new Set();
+function familyFor(f){
+  if(f.assetId){ const fam = "ff_" + f.assetId; if(!loadedFonts.has(fam)){ loadedFonts.add(fam); try { new FontFace(fam, `url(${blobUrl(f.assetId)})`).load().then(ff => document.fonts.add(ff)).catch(()=>{}); } catch {} } return fam; }
+  if(f.google && f.name){ const key = "g_" + f.name; if(!loadedFonts.has(key)){ loadedFonts.add(key); const l = document.createElement("link"); l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(f.name.trim()).replace(/%20/g,"+") + "&display=swap"; document.head.appendChild(l); } }
+  return f.name || "inherit";
+}
+
+/* ---------- render ---------- */
+function render(){ renderNav(); renderMain(); }
+
+function renderNav(){
+  const r = route(), cur = r.view === "brand" ? r.id : r.view;
+  const item = (href, label, on, color) => `<a class="nav-i ${on?"on":""}" href="${href}">${color!==undefined?`<i style="${color?`background:${color}`:""}"></i>`:""}<span class="t">${esc(label)}</span></a>`;
+  const m = master();
+  let h = item("#home","الرئيسية",cur==="home");
+  if(m) h += item("#b-"+m.id,"الهوية الأم",cur===m.id,primaryOf(m)||"");
+  for(const k of KIND_ORDER){
+    const sc = SECT[k]; const list = S.brands.filter(b=>b.kind===k);
+    h += `<div class="nav-h"><a href="#${sc.hash}">${sc.title}</a><span class="mono">${list.length}</span></div>`;
+    h += list.length ? list.map(b=>item("#b-"+b.id,b.name,cur===b.id,primaryOf(b)||"")).join("") : `<div class="nav-empty">${sc.empty}</div>`;
+    if(window.innerWidth <= 900) h += item("#"+sc.hash,sc.title,cur===sc.hash);
+  }
+  $("#nav").innerHTML = h;
+  $("#sidefoot").innerHTML = S.canEdit
+    ? `<button class="btn primary" data-act="new-brand" data-kind="program">+ برنامج جديد</button><button class="btn" data-act="new-brand" data-kind="project">+ مشروع أو فريق</button><button class="btn" data-act="new-brand" data-kind="product">+ منتج جديد</button><span class="who">لديك صلاحية التعديل والرفع.</span>`
+    : OFF ? `<span class="who">نسخة محفوظة بتاريخ ${esc(fmtDate(OFF.exportedAt))} — للعرض والتحميل فقط. أحدث نسخة على موقع المكتبة.</span>`
+    : (S.loaded ? `<span class="who">وضع العرض: يمكنك التحميل والنسخ. لإضافة ملفات اطلب صلاحية محرّر.</span>` : "");
+}
+
+function stateNotice(){
+  if(S.dbState === "nodb") return `<div class="notice">المكتبة متاحة لأعضاء الفريق المسجّلين. سجّل الدخول إلى Claude لعرض الهويات والملفات.</div>`;
+  if(S.dbState === "error") return `<div class="notice">تعذّر تحميل المكتبة. أعد فتح الصفحة لاحقًا.</div>`;
+  if(S.dbState === "slow" && !S.brands.length) return `<div class="notice">لم نتمكن من الوصول إلى البيانات حتى الآن. تحقّق من الاتصال، وستظهر الهويات تلقائيًا عند توفرها.</div>`;
+  if(!S.loaded && !S.brands.length) return `<div class="notice">جارٍ تحميل المكتبة…</div>`;
+  return "";
+}
+
+function renderMain(){
+  const r = route(); const el = $("#main");
+  const note = stateNotice();
+  if(note && !S.brands.length){ el.innerHTML = note; return; }
+  if(r.view === "brand"){
+    const b = byId(r.id);
+    if(!b){ el.innerHTML = S.loaded ? `<div class="empty"><b>هذه الهوية غير موجودة</b><span>ربما حُذفت أو تغيّر رابطها.</span><a class="btn" href="#home">العودة للرئيسية</a></div>` : `<div class="notice">جارٍ التحميل…</div>`; return; }
+    ensureFiles(b.id); el.innerHTML = brandView(b); return;
+  }
+  ensureFiles(null);
+  const lk = KIND_ORDER.find(k => SECT[k].hash === r.view);
+  el.innerHTML = lk ? listView(lk) : homeView();
+}
+
+function matchQ(b){ const q = S.q.trim(); if(!q) return true; return [b.name,b.nameEn,b.summary].join(" ").toLowerCase().includes(q.toLowerCase()); }
+
+function card(b, wide){
+  const c = primaryOf(b) || "var(--line)";
+  const art = b.coverAsset ? `<img src="${blobUrl(b.coverAsset)}" alt="شعار ${esc(b.name)}" loading="lazy">` : `<span class="mono-init">${esc(initials(b.name))}</span>`;
+  const dots = (b.colors||[]).map(x=>hexNorm(x.hex)).filter(Boolean).slice(0,7).map(h=>`<span style="background:${h}" title="${h}"></span>`).join("");
+  return `<a class="card ${wide?"wide":""}" href="#b-${esc(b.id)}" style="--c:${c}">
+    <div class="card-art">${art}</div>
+    <div class="card-body"><span class="kind">${KIND[b.kind]||""}</span><h3>${esc(b.name)}</h3>${b.summary?`<p>${esc(b.summary)}</p>`:""}${dots?`<div class="dots">${dots}</div>`:""}</div></a>`;
+}
+
+function homeView(){
+  const m = master();
+  const counts = KIND_ORDER.map(k => `<span><b class="mono">${S.brands.filter(b=>b.kind===k).length}</b> ${SECT[k].title}</span>`).join("");
+  let h = `<header class="hero">
+    <div class="hero-txt"><span class="eyebrow">مرجع فريق التصميم</span><h1>كل ما يحتاجه المصمم قبل أن يبدأ</h1>
+      <p>الشعارات والخطوط والألوان والضوابط وبرومبت الهوية لأكاديمية هندسة الأجيال وبرامجها ومشاريعها ومنتجاتها، في مكان واحد.</p>
+      <div class="hero-stats">${counts}</div></div>
+    <div class="hero-mark"><img src="${blobUrl(SITE.logoSlogan)}" alt="أكاديمية هندسة الأجيال — لأن الأم تصنع الأمة" onerror="this.remove()"></div></header>`;
+  if(S.q.trim()) h += `<p class="hint">نتائج البحث عن «${esc(S.q)}»</p>`;
+  if(m && matchQ(m)) h += `<section><div class="sec-h"><h2>الهوية الأم</h2></div>${card(m,true)}</section>`;
+  else if(!m && S.loaded && !S.q.trim()) h += `<div class="empty"><b>لم تُضف الهوية الأم بعد</b><span>ابدأ بها، فالبرامج والمشاريع والمنتجات تُبنى عليها.</span>${S.canEdit?`<button class="btn primary" data-act="new-brand" data-kind="master">إنشاء الهوية الأم</button>`:""}</div>`;
+  for(const k of KIND_ORDER) h += listSection(k, S.brands.filter(b=>b.kind===k&&matchQ(b)), 6);
+  return h;
+}
+function listSection(kind, items, cap){
+  const sc = SECT[kind];
+  const add = S.canEdit ? `<button class="btn sm" data-act="new-brand" data-kind="${kind}">+ ${sc.one}</button>` : "";
+  let body;
+  if(!items.length) body = `<div class="empty"><b>${S.q.trim()?"لا نتائج مطابقة":sc.empty}</b>${!S.q.trim()?`<span>${sc.hint}</span>`:""}${S.canEdit&&!S.q.trim()?add:""}</div>`;
+  else body = `<div class="grid">${(cap?items.slice(0,cap):items).map(b=>card(b)).join("")}</div>`;
+  const more = cap && items.length > cap ? `<a class="btn sm ghost" href="#${sc.hash}">عرض الكل (${items.length})</a>` : "";
+  return `<section><div class="sec-h"><h2>${sc.title} <span class="count">${items.length}</span></h2><div class="row">${more}${items.length?add:""}</div></div>${body}</section>`;
+}
+function listView(kind){
+  const items = S.brands.filter(b=>b.kind===kind&&matchQ(b));
+  const m = master(); const sc = SECT[kind];
+  return `<div class="intro"><div><span class="eyebrow">${sc.eyebrow}</span><h1>${sc.title}</h1><p>${sc.intro}${m?` <a href="#b-${m.id}">مراجعة الهوية الأم</a>`:""}</p></div></div>` + listSection(kind, items, 0);
+}
+
+/* brand sheet */
+function brandView(b){
+  const p = primaryOf(b) || primaryOf(master()) || "#003375"; const on = onColor(p);
+  const fontIds = fontMatchedIds(b);
+  const logos = S.files.filter(f=>f.category==="logo"); const others = S.files.filter(f=>f.category!=="logo" && !fontIds.has(f.id));
+  const m = master(); const isM = b.kind === "master";
+  const art = b.coverAsset ? `<img src="${blobUrl(b.coverAsset)}" alt="شعار ${esc(b.name)}">` : `<span class="mono-init">${esc(initials(b.name))}</span>`;
+  const ed = S.canEdit;
+  let h = `<header class="band" style="--band:${p};--on:${on}" ${on!=="#FFFFFF"?"data-light":""}>
+    <div class="band-logo">${art}</div>
+    <div><span class="kind">${KIND[b.kind]||""}</span><h1>${esc(b.name)}</h1>${b.nameEn?`<p class="en" dir="ltr" style="text-align:right">${esc(b.nameEn)}</p>`:""}${b.summary?`<p class="sum">${esc(b.summary)}</p>`:""}
+      <div class="band-actions">${b.driveFolder?`<a class="btn sm" href="${esc(b.driveFolder)}" target="_blank" rel="noopener">مجلد الملفات على درايف ↗</a>`:""}<button class="btn sm" data-act="jump" data-to="sec-prompt">برومبت الهوية</button>${ed?`<button class="btn sm" data-act="edit-info">تعديل البيانات</button>`:""}</div>
+      ${b.updatedAt?`<div class="band-meta">آخر تحديث: ${fmtDate(b.updatedAt)}</div>`:""}
+    </div></header>`;
+  if(!isM && m) h += `<div class="parent-note"><span class="kind">${b.kind==="project"?"بإشراف":"مشتقة من"}</span><a href="#b-${m.id}">${esc(m.name)}</a><span>راجع الهوية الأم قبل أي تعديل على الألوان أو الخطوط.</span></div>`;
+  h += `<nav class="subnav" aria-label="أقسام الهوية">${[["sec-logos","الشعارات"],["sec-colors","الألوان"],...(gradsOf(b).length?[["sec-grads","التدرجات"]]:[]),["sec-fonts","الخطوط"],["sec-files","الملفات والعناصر"],["sec-rules","الضوابط"],["sec-prompt","البرومبت"],["sec-downloads","التحميلات"]].map(([id,l])=>`<button data-act="jump" data-to="${id}">${l}</button>`).join("")}</nav>`;
+
+  /* logos */
+  h += `<section id="sec-logos"><div class="sec-h"><h2>الشعارات <span class="count">${logos.length}</span></h2>${ed?`<button class="btn sm primary" data-act="add-file" data-cat="logo">+ رفع شعارات</button>`:""}</div>`;
+  if(!S.filesLoaded && S.filesFor===b.id) h += `<p class="hint">جارٍ تحميل الملفات…</p>`;
+  else if(!logos.length) h += `<div class="empty"><b>لا توجد شعارات بعد</b><span>ارفع كل نسخة على حدة (أفقي، عمودي، أيقونة، أبيض، أسود…) بصيغة SVG أو PNG شفاف لتتمكن من تصديرها بأي حجم.</span>${ed?`<button class="btn primary" data-act="add-file" data-cat="logo">رفع شعارات</button>`:""}</div>`;
+  else h += `<div class="tiles">${logos.map(f=>logoTile(b,f)).join("")}</div>`;
+  h += `</section>`;
+
+  /* colors */
+  const cols = (b.colors||[]).map(c=>({c,k:codesOf(c)})).filter(x=>x.k);
+  h += `<section id="sec-colors"><div class="sec-h"><h2>الألوان <span class="count">${cols.length}</span></h2><div class="row">${cols.length?`<button class="btn sm" data-act="copy-css">نسخ كمتغيرات CSS</button><button class="btn sm" data-act="copy-hexes">نسخ كل الأكواد</button>`:""}${ed?`<button class="btn sm primary" data-act="edit-colors">تعديل الألوان</button>`:""}</div></div>`;
+  if(!cols.length) h += `<div class="empty"><b>لم تُحدَّد ألوان بعد</b><span>أضف الألوان بأكواد HEX، وسيُحسب RGB وCMYK وHSL تلقائيًا.</span>${ed?`<button class="btn primary" data-act="edit-colors">إضافة الألوان</button>`:""}</div>`;
+  else h += `<div class="palette-strip" aria-hidden="true">${cols.map(x=>`<span style="background:${x.k.hex}"></span>`).join("")}</div><div class="swatches">${cols.map(({c,k})=>swatch(c,k)).join("")}</div>`;
+  h += `</section>`;
+
+  /* gradients */
+  const grads = gradsOf(b);
+  if(grads.length || ed){
+    h += `<section id="sec-grads"><div class="sec-h"><h2>التدرجات اللونية <span class="count">${grads.length}</span></h2>${ed?`<button class="btn sm primary" data-act="edit-grads">تعديل التدرجات</button>`:""}</div>`;
+    if(!grads.length) h += `<div class="empty"><b>لا توجد تدرجات بعد</b><span>أضف التدرجات المعتمدة بلونَي البداية والنهاية والزاوية، لينسخها الفريق ككود CSS أو يحمّلها كخلفية SVG.</span><button class="btn primary" data-act="edit-grads">إضافة تدرج</button></div>`;
+    else h += `<div class="grads">${grads.map((g,i)=>gradRow(g,i)).join("")}</div>`;
+    h += `</section>`;
+  }
+
+  /* fonts */
+  const fonts = b.fonts||[];
+  h += `<section id="sec-fonts"><div class="sec-h"><h2>الخطوط <span class="count">${fonts.length}</span></h2>${ed?`<button class="btn sm primary" data-act="edit-fonts">تعديل الخطوط</button>`:""}</div>`;
+  if(!fonts.length) h += `<div class="empty"><b>لم تُضف خطوط بعد</b><span>ارفع ملف الخط (TTF أو OTF أو WOFF) لتظهر معاينته هنا ويحمّله الفريق، أو أضف رابط درايف لحزمة الخط كاملة.</span>${ed?`<button class="btn primary" data-act="edit-fonts">إضافة خط</button>`:""}</div>`;
+  else h += `<div class="fonts">${fonts.map((f,i)=>fontCard(f,i)).join("")}</div>`;
+  h += `</section>`;
+
+  /* files */
+  const cats = [...new Set(others.map(f=>f.category))];
+  if(S.fileFilter !== "all" && !cats.includes(S.fileFilter)) S.fileFilter = "all";
+  const shown = others.filter(f => S.fileFilter==="all" || f.category===S.fileFilter);
+  h += `<section id="sec-files"><div class="sec-h"><h2>الملفات والعناصر <span class="count">${others.length}</span></h2>${ed?`<button class="btn sm primary" data-act="add-file" data-cat="element">+ إضافة ملف</button>`:""}</div>`;
+  if(!others.length) h += `<div class="empty"><b>لا توجد ملفات بعد</b><span>العناصر الجرافيكية، الأنماط، القوالب، دليل الهوية PDF، والملفات المصدرية (AI وPSD) عبر روابط درايف.</span>${ed?`<button class="btn primary" data-act="add-file" data-cat="element">إضافة ملف</button>`:""}</div>`;
+  else {
+    if(cats.length > 1) h += `<div class="filters"><button class="${S.fileFilter==="all"?"on":""}" data-act="filter" data-cat="all">الكل</button>${cats.map(c=>`<button class="${S.fileFilter===c?"on":""}" data-act="filter" data-cat="${c}">${CATS[c]||c}</button>`).join("")}</div>`;
+    h += `<div class="flist">${shown.map(f=>fileRow(b,f)).join("")}</div>`;
+  }
+  h += `</section>`;
+
+  /* rules */
+  const R = b.rules||{};
+  const hasRules = ["digital","print","dos","donts","voice"].some(k=>String(R[k]||"").trim());
+  h += `<section id="sec-rules"><div class="sec-h"><h2>ضوابط التصميم والإنتاج</h2>${ed?`<button class="btn sm primary" data-act="edit-rules">تعديل الضوابط</button>`:""}</div>`;
+  if(!hasRules) h += `<div class="empty"><b>لم تُكتب الضوابط بعد</b><span>مساحات الحماية حول الشعار، الحد الأدنى للحجم، المقاسات الرقمية، مواصفات الطباعة، وما يُسمح وما لا يُسمح.</span>${ed?`<button class="btn primary" data-act="edit-rules">كتابة الضوابط</button>`:""}</div>`;
+  else {
+    const block = (cls,t,v,list) => String(v||"").trim() ? `<div class="rule ${cls}"><h3>${t}</h3>${list?`<ul>${lines(v).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p class="txt">${esc(v)}</p>`}</div>` : "";
+    h += `<div class="rules">${block("","الإنتاج الرقمي",R.digital)}${block("","الإنتاج المطبوع",R.print)}${block("do","افعل",R.dos,true)}${block("dont","لا تفعل",R.donts,true)}${block("","نبرة الخطاب والكتابة",R.voice)}</div>`;
+  }
+  h += `</section>`;
+
+  /* prompt */
+  const view = S.promptView || (b.promptFinal ? "final" : "auto");
+  const text = view === "ai" ? (S.aiDraft ?? "") : view === "final" ? (b.promptFinal||"") : buildPrompt(b);
+  h += `<section id="sec-prompt"><div class="sec-h"><h2>برومبت الهوية</h2><span class="hint">يُرفق قبل بدء أي مشروع، مع مصمم أو مع أداة ذكاء اصطناعي.</span></div>
+    <div class="prompt-box"><div class="prompt-bar"><div class="tabs">
+      ${b.promptFinal?`<button class="${view==="final"?"on":""}" data-act="prompt-view" data-v="final">المعتمد</button>`:""}
+      <button class="${view==="auto"?"on":""}" data-act="prompt-view" data-v="auto">مُولَّد من بيانات الهوية</button>
+      ${S.aiDraft!==null?`<button class="${view==="ai"?"on":""}" data-act="prompt-view" data-v="ai">صياغة Claude</button>`:""}
+    </div><div class="row">
+      <button class="btn sm primary" data-act="copy-prompt">نسخ البرومبت</button>
+      ${S.sample?`<button class="btn sm" data-act="ai-prompt" ${S.aiBusy?"disabled":""}>${S.aiBusy?"جارٍ الصياغة…":"صياغة احترافية بواسطة Claude"}</button>`:""}
+      ${ed&&view==="ai"&&S.aiDraft&&!S.aiBusy?`<button class="btn sm" data-act="approve-ai">اعتماد هذه الصياغة</button>`:""}
+      ${ed?`<button class="btn sm" data-act="edit-prompt">تعديل</button>`:""}
+    </div></div><pre id="promptText">${esc(text)}</pre></div></section>`;
+
+  /* download packs */
+  const fontCount = (b.fonts||[]).filter(f => familyFiles(f, S.files).length).length;
+  const packs = [
+    ["all", "الهوية كاملة", "كل الشعارات والخطوط والألوان والتدرجات والملفات والبرومبت في ملف واحد مرتّب في مجلدات", "ZIP", true],
+    ["logos", "الشعارات", `${logos.length} ملف بصيغها الأصلية`, "ZIP", logos.length],
+    ["fonts", "الخطوط", `${fontCount} ${fontCount===1?"عائلة":"عائلات"}، كل عائلة في مجلد`, "ZIP", fontCount],
+    ["colors", "الألوان", `${cols.length} لون: CSS وJSON ونص بأكواد HEX/RGB/CMYK ولوحة SVG`, "ZIP", cols.length],
+    ["grads", "التدرجات", `${grads.length} تدرج: خلفيات SVG وكود CSS`, "ZIP", grads.length],
+    ["files", "الملفات والعناصر", `${others.length} ملف${others.some(f=>f.driveUrl)?"، وروابط درايف في ملف نصي":""}`, "ZIP", others.length],
+    ["brief", "الضوابط والبرومبت", "ملف Markdown بالنبذة والضوابط وبرومبت الهوية", "MD", true]];
+  h += `<section id="sec-downloads"><div class="sec-h"><h2>تحميل حزم الهوية</h2><span class="hint">كل جزء في ملف واحد جاهز.</span></div>
+    ${S.downloads ? `<div class="packs">${packs.map(([k,t,d,fmt,on]) => `<button class="pack ${k==="all"?"main":""}" data-act="pack" data-k="${k}" ${on?"":"disabled"}><span class="pk-t">${t}</span><span class="pk-d">${on?d:"لا يوجد محتوى بعد"}</span><span class="pk-f">${fmt} ⭳</span></button>`).join("")}</div>` : `<div class="notice">التحميل غير متاح في هذا العرض. افتح المكتبة من claude.ai لتحميل الحزم.</div>`}</section>`;
+  return h;
+}
+
+function dlControl(f, name, label){
+  if(f.driveUrl) return `<a class="btn sm" href="${esc(f.driveUrl)}" target="_blank" rel="noopener">فتح في درايف ↗</a>`;
+  if(!f.assetId) return "";
+  const ext = f.ext || extOf(f.filename);
+  if(S.downloads) return `<button class="btn sm" data-act="dl" data-id="${esc(f.id)}">${label||"تحميل"}${SAVE_EXT.has(ext)?"":" (ZIP)"}</button>`;
+  return `<a class="btn sm" href="${blobUrl(f.assetId)}" target="_blank" rel="noopener">فتح الملف ↗</a>`;
+}
+const isImg = f => f.assetId && /^image\//.test(f.contentType||"");
+
+function logoTile(b,f){
+  const bg = S.tileBg[f.id] || "checker";
+  const ext = (f.ext || extOf(f.filename) || "").toUpperCase();
+  const art = isImg(f) ? `<img src="${blobUrl(f.assetId)}" alt="${esc(f.title)}" loading="lazy">` : `<span class="ext-label">${esc(ext||"FILE")}</span>`;
+  let menu = "";
+  if(isImg(f) && S.downloads){
+    const svg = f.contentType === "image/svg+xml";
+    const sizes = svg ? [[1000,"1000px"],[2000,"2000px"],[4000,"4000px"]] : [[1,"×1"],[2,"×2"],[4,"×4"]];
+    menu = `<details class="menu"><summary class="btn sm">تحميل بصيغة ▾</summary><div class="pop">
+      <button data-act="dl" data-id="${esc(f.id)}">الملف الأصلي <small>${esc(ext)}</small></button><hr>
+      ${sizes.map(([s,l])=>`<button data-act="exp" data-id="${esc(f.id)}" data-fmt="png" data-s="${s}">PNG شفاف <small>${l}</small></button>`).join("")}
+      <button data-act="exp" data-id="${esc(f.id)}" data-fmt="jpg" data-s="${svg?2000:1}">JPG بخلفية بيضاء <small>${svg?"2000px":"×1"}</small></button>
+      <button data-act="exp" data-id="${esc(f.id)}" data-fmt="webp" data-s="${svg?2000:1}">WEBP للويب <small>${svg?"2000px":"×1"}</small></button>
+    </div></details>`;
+  } else menu = dlControl(f, null);
+  return `<article class="tile"><div class="tile-art bg-${bg}">${art}</div>
+    <div class="tile-meta"><strong>${esc(f.title||f.filename||"شعار")}</strong>${f.variant?`<span class="v">${esc(f.variant)}</span>`:""}<span class="fmt">${esc(ext)}${f.sizeBytes?" · "+fmtSize(f.sizeBytes):f.sizeText?" · "+esc(f.sizeText):""}${f.driveUrl?" · درايف":""}</span>${b.coverAsset&&b.coverAsset===f.assetId?`<span><span class="badge">الشعار الرئيسي</span></span>`:""}</div>
+    <div class="tile-actions">${menu}<span class="sp"></span>
+      ${isImg(f)?`<button class="icon-btn" data-act="bg" data-id="${esc(f.id)}" title="تبديل خلفية المعاينة" aria-label="تبديل خلفية المعاينة">◐</button>`:""}
+      ${S.canEdit?`<button class="icon-btn" data-act="edit-file" data-id="${esc(f.id)}" title="تعديل" aria-label="تعديل">✎</button>`:""}
+    </div></article>`;
+}
+
+function swatch(c,k){
+  const on = onColor(k.hex);
+  const row = (lbl,val,copyVal,note) => `<dt>${lbl}</dt><dd>${esc(val)}${note?` <span class="muted" style="font-family:var(--f-body);font-size:11px">${note}</span>`:""}</dd><button data-act="copy" data-text="${esc(copyVal)}" data-label="${lbl}">نسخ</button>`;
+  return `<div class="swatch"><button class="chip" style="background:${k.hex};color:${on}" data-act="copy" data-text="${k.hex}" data-label="${k.hex}"><span class="hx" dir="ltr">${k.hex}</span><small>انقر لنسخ HEX</small></button>
+    <div class="sw-body"><header><strong>${esc(c.name||"بدون اسم")}</strong>${c.role?`<span class="kind">${esc(c.role)}</span>`:""}</header>
+    <dl class="codes">${row("HEX",k.hex,k.hex)}${row("RGB",k.rgb,`rgb(${k.rgb})`)}${row("CMYK",k.cmyk,k.cmyk,k.cmykAuto?"تقريبي":"")}${row("HSL",k.hsl,`hsl(${k.hsl.replace("°","")})`)}${k.pantone?row("PANTONE",k.pantone,k.pantone):""}</dl></div></div>`;
+}
+
+/* gradients */
+const gradsOf = b => (b?.gradients||[]).filter(g => hexNorm(g.from) && hexNorm(g.to));
+const gradAngle = g => { const a = parseInt(g.angle,10); return isNaN(a) ? 135 : ((a%360)+360)%360; };
+const gradCss = g => `linear-gradient(${gradAngle(g)}deg, ${hexNorm(g.from)} 0%, ${hexNorm(g.to)} 100%)`;
+function gradSvg(g, w=1920, h=1080){
+  const a = gradAngle(g)*Math.PI/180, s = Math.sin(a)/2, c = Math.cos(a)/2, r = n => n.toFixed(4);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><defs><linearGradient id="g" x1="${r(.5-s)}" y1="${r(.5+c)}" x2="${r(.5+s)}" y2="${r(.5-c)}"><stop offset="0" stop-color="${hexNorm(g.from)}"/><stop offset="1" stop-color="${hexNorm(g.to)}"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/></svg>`;
+}
+function gradRow(g,i){
+  const css = gradCss(g); const f = hexNorm(g.from), t = hexNorm(g.to);
+  return `<div class="grad"><div class="grad-h"><strong>${esc(g.name||"تدرج")}</strong>${g.use?`<span>${esc(g.use)}</span>`:""}</div>
+    <div class="grad-bar" style="background:${css}"><button data-act="copy" data-text="${f}" data-label="${f}" style="color:${onColor(f)}">${f}</button><span class="mono deg" style="color:${onColor(f)}">${gradAngle(g)}°</span><button data-act="copy" data-text="${t}" data-label="${t}" style="color:${onColor(t)}">${t}</button></div>
+    <div class="row"><button class="btn sm" data-act="copy" data-text="${esc("background: "+css+";")}" data-label="كود CSS">نسخ CSS</button>${S.downloads?`<button class="btn sm ghost" data-act="dl-grad" data-i="${i}">تحميل SVG</button>`:""}</div></div>`;
+}
+function editGradients(b){
+  let rows = (b.gradients||[]).map(g => ({...g}));
+  const draw = w => {
+    w.querySelector("#grows").innerHTML = rows.length ? rows.map((g,i) => `<div class="ed-row g" data-i="${i}">
+      <div class="gprev" style="background:${hexNorm(g.from)&&hexNorm(g.to)?gradCss(g):"var(--sunk)"}"></div>
+      <input data-f="name" value="${esc(g.name||"")}" placeholder="اسم التدرج" aria-label="اسم التدرج">
+      <input data-f="use" value="${esc(g.use||"")}" placeholder="الاستخدام (خلفيات، CTA…)" aria-label="الاستخدام">
+      <span class="gpair"><input type="color" data-f="fromPick" value="${(hexNorm(g.from)||"#000000").toLowerCase()}" aria-label="لون البداية"><input data-f="from" dir="ltr" class="mono" value="${esc(g.from||"")}" placeholder="#011A4A" aria-label="HEX البداية"></span>
+      <span class="gpair"><input type="color" data-f="toPick" value="${(hexNorm(g.to)||"#000000").toLowerCase()}" aria-label="لون النهاية"><input data-f="to" dir="ltr" class="mono" value="${esc(g.to||"")}" placeholder="#023373" aria-label="HEX النهاية"></span>
+      <input data-f="angle" type="number" dir="ltr" min="0" max="360" value="${esc(g.angle ?? 135)}" aria-label="الزاوية بالدرجات" title="الزاوية بالدرجات">
+      <div class="row-tools"><button class="icon-btn" data-m="up" aria-label="تحريك لأعلى">↑</button><button class="icon-btn" data-m="down" aria-label="تحريك لأسفل">↓</button><button class="icon-btn" data-m="del" aria-label="حذف">✕</button></div></div>`).join("") : `<p class="hint">لا توجد تدرجات بعد.</p>`;
+  };
+  modal({title:"تدرجات " + b.name, wide:true,
+    body:`<p class="hint">لكل تدرج: لون البداية ولون النهاية والزاوية (135 قطري، 90 أفقي، 180 رأسي).</p><div class="ed-list" id="grows"></div><div class="row"><button class="btn sm" data-m="add">+ إضافة تدرج</button></div>`,
+    onOpen: w => {
+      draw(w);
+      w.addEventListener("input", e => { const r = e.target.closest(".ed-row"); if(!r) return; const i = +r.dataset.i, f = e.target.dataset.f; if(!f) return;
+        if(f === "fromPick" || f === "toPick"){ const k = f.replace("Pick",""); rows[i][k] = e.target.value.toUpperCase(); r.querySelector(`[data-f=${k}]`).value = rows[i][k]; }
+        else { rows[i][f] = f === "angle" ? +e.target.value : e.target.value; if(f==="from"||f==="to"){ const n = hexNorm(e.target.value); if(n) r.querySelector(`[data-f=${f}Pick]`).value = n.toLowerCase(); } }
+        const g = rows[i]; if(hexNorm(g.from) && hexNorm(g.to)) r.querySelector(".gprev").style.background = gradCss(g); });
+      w.addEventListener("click", e => { const t = e.target.closest("[data-m]"); if(!t) return; const r = t.closest(".ed-row"); const i = r ? +r.dataset.i : -1; const m = t.dataset.m;
+        if(m === "add"){ const c = (b.colors||[]).map(x=>hexNorm(x.hex)).filter(Boolean); rows.push({name:"", use:"", from:c[0]||"#003375", to:c[1]||"#F280AA", angle:135}); }
+        if(m === "del") rows.splice(i,1);
+        if(m === "up" && i > 0) [rows[i-1], rows[i]] = [rows[i], rows[i-1]];
+        if(m === "down" && i < rows.length-1) [rows[i+1], rows[i]] = [rows[i], rows[i+1]];
+        draw(w); });
+    },
+    onSave: async w => {
+      const bad = rows.find(g => !hexNorm(g.from) || !hexNorm(g.to)); if(bad) fail(`أكواد التدرج «${bad.name||"بدون اسم"}» غير صالحة. استخدم صيغة مثل #011A4A.`);
+      const out = rows.map(g => ({name:String(g.name||"").trim(), use:String(g.use||"").trim(), from:hexNorm(g.from), to:hexNorm(g.to), angle:gradAngle(g)}));
+      await touch(b.id, {gradients:out}); toast("تم حفظ التدرجات");
+    }});
+}
+
+/* font families: files whose name starts with the family name belong to that family */
+const famKey = s => String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+const WEIGHT_ORDER = ["thin","extralight","light","regular","book","medium","semibold","bold","extrabold","black","heavy"];
+const weightOf = name => { const k = famKey(String(name).replace(/\.[^.]+$/,"")); let best = ""; for(const w of WEIGHT_ORDER) if(k.endsWith(w) && w.length > best.length) best = w; return best; };
+function familyFiles(f, files){
+  const k = famKey(f.name); if(!k) return [];
+  const out = files.filter(x => x.category === "font" && x.assetId && (famKey(x.filename).startsWith(k) || famKey(x.title).startsWith(k)));
+  if(f.assetId && !out.some(x => x.assetId === f.assetId)) out.push({assetId:f.assetId, filename:f.filename || (k+".otf"), title:f.name, linked:true});
+  return out.sort((a,b) => WEIGHT_ORDER.indexOf(weightOf(a.filename)) - WEIGHT_ORDER.indexOf(weightOf(b.filename)));
+}
+function fontMatchedIds(b){ const ids = new Set(); (b.fonts||[]).forEach(f => familyFiles(f, S.files).forEach(x => x.id && ids.add(x.id))); return ids; }
+/* gather a family's files: this identity first, then the same family uploaded under other identities */
+async function collectFamily(b, f){
+  let list = familyFiles(f, S.files);
+  if(list.filter(x=>!x.linked).length === 0 && S.db){
+    for(const o of S.brands){ if(o.id === b.id) continue;
+      try { const snap = await S.db.collection("brands/"+o.id+"/files").where("category","==","font").get();
+        familyFiles({name:f.name}, snap.docs.map(d => ({id:d.id, ...d.data()}))).forEach(x => { if(!list.some(y => y.filename === x.filename)) list.push(x); }); } catch {} }
+  }
+  const seen = new Set(); return list.filter(x => !seen.has(x.filename) && seen.add(x.filename));
+}
+
+function fontCard(f,i){
+  const fam = familyFor(f);
+  const files = familyFiles(f, S.files);
+  const exts = [...new Set(files.map(x => extOf(x.filename).toUpperCase()).filter(Boolean))].join(" / ");
+  let dl = "";
+  if(files.length || f.assetId) dl = S.downloads ? `<button class="btn sm primary" data-act="dl-font" data-i="${i}">تحميل الخط ${files.length>1?`(${files.length} أوزان · ZIP)`:`(${esc(exts||"ZIP")})`}</button>` : `<span class="hint">التحميل غير متاح في هذا العرض</span>`;
+  else if(!f.driveUrl && !f.google) dl = `<span class="hint">لم يُرفع ملف هذا الخط بعد.</span>`;
+  if(f.driveUrl) dl += `<a class="btn sm" href="${esc(f.driveUrl)}" target="_blank" rel="noopener">حزمة الخط على درايف ↗</a>`;
+  const chips = files.filter(x=>!x.linked || files.length===1).map(x => `<span class="wchip">${esc(weightOf(x.filename) ? weightOf(x.filename).replace(/^./,c=>c.toUpperCase()) : x.filename)}</span>`).join("");
+  if(f.google && f.name) dl += `<a class="btn sm ghost" href="https://fonts.google.com/specimen/${encodeURIComponent(f.name.trim()).replace(/%20/g,"+")}" target="_blank" rel="noopener">Google Fonts ↗</a>`;
+  const st = `font-family:'${esc(fam).replace(/'/g,"")}', var(--f-body)`;
+  return `<div class="font"><div class="spec-ar" style="${st}">أكاديمية هندسة الأجيال ١٢٣</div><div class="spec-lt" style="${st}">Aa Bb Cc 0123456789</div>
+    <div class="meta"><strong>${esc(f.name||"خط")}</strong>${f.role?`<span class="kind">${esc(f.role)}</span>`:""}</div>
+    ${f.weights?`<p>الأوزان: <span dir="ltr">${esc(f.weights)}</span></p>`:""}${f.usage?`<p>${esc(f.usage)}</p>`:""}
+    ${chips?`<div class="wchips" dir="ltr">${chips}</div>`:""}
+    ${!f.assetId&&!f.google?`<p class="hint">المعاينة تعمل فقط إذا كان الخط مثبتًا على جهازك أو مرفوعًا هنا.</p>`:""}
+    ${dl?`<div class="row">${dl}</div>`:""}
+    <div class="row"><button class="btn sm ghost" data-act="copy" data-text="${esc(f.name||"")}" data-label="اسم الخط">نسخ اسم الخط</button><button class="btn sm ghost" data-act="copy" data-text="${esc(`font-family: '${f.name||""}', sans-serif;`)}" data-label="كود CSS">نسخ CSS</button></div></div>`;
+}
+
+/* ---------- ZIP packs ---------- */
+const zipName = s => safeName(s).replace(/\s+/g," ");
+const extFix = f => { const e = f.ext || extOf(f.filename); const n = f.filename || (f.title + "." + e); return extOf(n) ? n : n + "." + e; };
+async function zipSave(name, build){
+  if(!S.downloads){ toast("التحميل غير متاح في هذا العرض"); return; }
+  if(!window.JSZip){ toast("أداة الضغط لم تُحمَّل. أعد فتح الصفحة ثم حاول مجددًا"); return; }
+  toast("جارٍ تجهيز الملف…");
+  try { const z = new JSZip(); await build(z); const blob = await z.generateAsync({type:"blob"}); await saveAs(name, blob); }
+  catch(e){ console.error(e); toast("تعذّر تجهيز الملف"); }
+}
+async function addFiles(z, folder, files){
+  const links = [];
+  for(const f of files){
+    if(f.assetId){ try { z.file((folder?folder+"/":"") + safeName(extFix(f)), await fetchBlob(f.assetId)); } catch { links.push(`${f.title||f.filename}: تعذّر جلب الملف`); } }
+    else if(f.driveUrl) links.push(`${f.title||"ملف"}${f.ext?` (${f.ext.toUpperCase()})`:""}: ${f.driveUrl}`);
+  }
+  if(links.length) z.file((folder?folder+"/":"") + "روابط درايف.txt", links.join("\n"));
+}
+const colorsCss = b => ":root {\n" + (b.colors||[]).map((c,i)=>{ const h = hexNorm(c.hex); if(!h) return null; const n = (c.name||"").trim() ? c.name.trim().replace(/[\s·]+/g,"-") : "color-"+(i+1); return `  --${n}: ${h};`; }).filter(Boolean).join("\n") + "\n}\n";
+const colorsTxt = b => (b.colors||[]).map(c => { const k = codesOf(c); return k ? `${c.name||"لون"}${c.role?` (${c.role})`:""}\nHEX ${k.hex} | RGB ${k.rgb} | CMYK ${k.cmyk}${k.pantone?` | Pantone ${k.pantone}`:""}` : null; }).filter(Boolean).join("\n\n") + "\n";
+const colorsJson = b => JSON.stringify((b.colors||[]).map(c => { const k = codesOf(c); return k && {name:c.name||"", role:c.role||"", hex:k.hex, rgb:k.rgb, cmyk:k.cmyk, pantone:k.pantone||""}; }).filter(Boolean), null, 2);
+function paletteSvg(b){
+  const cs = (b.colors||[]).map(codesOf).filter(Boolean), W = 240, H = 260, cols = Math.min(5, cs.length||1), rows = Math.ceil(cs.length/cols);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${cols*W}" height="${rows*H}" viewBox="0 0 ${cols*W} ${rows*H}"><rect width="100%" height="100%" fill="#FFFFFF"/>` + cs.map((k,i) => { const x = (i%cols)*W, y = Math.floor(i/cols)*H, c = (b.colors||[]).filter(cc=>hexNorm(cc.hex))[i];
+    return `<rect x="${x+10}" y="${y+10}" width="${W-20}" height="170" rx="12" fill="${k.hex}"/><text x="${x+20}" y="${y+205}" font-family="sans-serif" font-size="18" fill="#111">${esc(c.name||"")}</text><text x="${x+20}" y="${y+230}" font-family="monospace" font-size="16" fill="#555">${k.hex}  ·  CMYK ${esc(k.cmyk)}</text>`; }).join("") + `</svg>`;
+}
+const gradsCss = b => gradsOf(b).map((g,i) => `/* ${g.name||"تدرج "+(i+1)}${g.use?` — ${g.use}`:""} */\n.gradient-${i+1} { background: ${gradCss(g)}; }`).join("\n\n") + "\n";
+function briefMd(b){
+  const R = b.rules||{}, L = [`# ${b.name}${b.nameEn?` — ${b.nameEn}`:""}`, "", `**النوع:** ${KIND[b.kind]||""}`];
+  if(b.summary) L.push("", "## نبذة", b.summary);
+  const sec = (t,v,list) => { if(String(v||"").trim()) L.push("", "## "+t, list ? lines(v).map(x=>"- "+x).join("\n") : String(v).trim()); };
+  sec("الإنتاج الرقمي", R.digital); sec("الإنتاج المطبوع", R.print); sec("افعل", R.dos, true); sec("لا تفعل", R.donts, true); sec("نبرة الخطاب والكتابة", R.voice);
+  L.push("", "---", "", buildPrompt(b));
+  if(b.promptFinal) L.push("", "---", "", "## البرومبت المعتمد", "", b.promptFinal);
+  return L.join("\n") + "\n";
+}
+async function packZip(b, k){
+  const base = zipName(b.name), logos = S.files.filter(f=>f.category==="logo"), fontIds = fontMatchedIds(b), others = S.files.filter(f=>f.category!=="logo" && !fontIds.has(f.id));
+  const addFonts = async (z, root) => { for(const f of (b.fonts||[])){ const list = await collectFamily(b, f); if(list.length) await addFiles(z, root + zipName(f.name), list); else if(f.driveUrl) z.file(root + zipName(f.name) + "/رابط الخط.txt", f.driveUrl); } };
+  const addColors = (z, root) => { z.file(root+"colors.css", colorsCss(b)); z.file(root+"colors.json", colorsJson(b)); z.file(root+"الألوان.txt", colorsTxt(b)); z.file(root+"palette.svg", paletteSvg(b)); };
+  const addGrads = (z, root) => { gradsOf(b).forEach((g,i) => z.file(`${root}${String(i+1).padStart(2,"0")} ${zipName(g.name||"تدرج")}.svg`, gradSvg(g))); z.file(root+"gradients.css", gradsCss(b)); };
+  if(k === "brief") return saveAs(`${base} - الضوابط والبرومبت.md`, briefMd(b));
+  const titles = {all:"الهوية كاملة", logos:"الشعارات", fonts:"الخطوط", colors:"الألوان", grads:"التدرجات", files:"الملفات والعناصر"};
+  await zipSave(`${base} - ${titles[k]}.zip`, async z => {
+    if(k === "logos") await addFiles(z, "", logos);
+    if(k === "fonts") await addFonts(z, "");
+    if(k === "colors") addColors(z, "");
+    if(k === "grads") addGrads(z, "");
+    if(k === "files") await addFiles(z, "", others);
+    if(k === "all"){
+      await addFiles(z, "01 الشعارات", logos); addColors(z, "02 الألوان/");
+      if(gradsOf(b).length) addGrads(z, "03 التدرجات/");
+      await addFonts(z, "04 الخطوط/"); if(others.length) await addFiles(z, "05 الملفات والعناصر", others);
+      z.file("06 الضوابط والبرومبت.md", briefMd(b));
+    }
+  });
+}
+
+function fileRow(b,f){
+  const ext = (f.ext || extOf(f.filename) || "").toUpperCase();
+  const th = isImg(f) ? `<img src="${blobUrl(f.assetId)}" alt="" loading="lazy">` : `<span>${esc(ext||"FILE")}</span>`;
+  return `<div class="frow"><div class="fthumb bg-checker">${th}</div>
+    <div class="finfo"><strong>${esc(f.title||f.filename||"ملف")}</strong><small>${CATS[f.category]||""}${f.variant?" · "+esc(f.variant):""} · <span class="mono">${esc(ext)}${f.sizeBytes?" · "+fmtSize(f.sizeBytes):f.sizeText?" · "+esc(f.sizeText):""}</span>${f.driveUrl?" · على درايف":""}</small>${f.note?`<span class="note">${esc(f.note)}</span>`:""}</div>
+    <div class="row">${dlControl(f)}${S.canEdit?`<button class="icon-btn" data-act="edit-file" data-id="${esc(f.id)}" title="تعديل" aria-label="تعديل">✎</button>`:""}</div></div>`;
+}
+
+/* prompt */
+function colorLine(c){ const k = codesOf(c); if(!k) return null; return `- ${c.name||"لون"}${c.role?` (${c.role})`:""}: HEX ${k.hex} | RGB ${k.rgb} | CMYK ${k.cmyk}${k.pantone?` | Pantone ${k.pantone}`:""}`; }
+function fontLine(f){ return `- ${f.name||"خط"}${f.role?` — يُستخدم في ${f.role}`:""}${f.weights?` — الأوزان: ${f.weights}`:""}${f.usage?` — ${f.usage}`:""}`; }
+function buildPrompt(b){
+  const m = master(); const isM = b.kind === "master"; const L = []; const R = b.rules||{};
+  L.push(`# برومبت هوية «${b.name}»${b.nameEn?` (${b.nameEn})`:""}`, "");
+  if(isM) L.push(`أنت مصمم في فريق أكاديمية هندسة الأجيال، وستعمل على تصميمات تحمل الهوية الأم للأكاديمية. التزم بالمواصفات التالية حرفيًا في كل منتج رقمي أو مطبوع.`);
+  else if(b.kind === "project") L.push(`أنت مصمم في فريق أكاديمية هندسة الأجيال، وستعمل على تصميمات «${b.name}»، وهو من المشاريع والفرق التي تشرف عليها الأكاديمية. لها هوية خاصة، لكنها تبقى منسجمة مع الهوية الأم للأكاديمية، فلا تخرج بالتصميم عن عباءتها.`);
+  else { const kindW = b.kind === "product" ? "المنتج" : "البرنامج";
+    L.push(`أنت مصمم في فريق أكاديمية هندسة الأجيال، وستعمل على تصميمات ${kindW} «${b.name}» التابع للأكاديمية. هوية ${kindW} مشتقة من الهوية الأم باختلافات محسوبة، فلا تخرج بالتصميم عن عباءة الأكاديمية.`); }
+  if(b.summary) L.push("", "## نبذة", b.summary);
+  const cl = (b.colors||[]).map(colorLine).filter(Boolean);
+  if(cl.length) L.push("", "## لوحة الألوان", ...cl, "استخدم الأكواد كما هي دون تعديل الدرجات، وCMYK للمطبوع وHEX/RGB للرقمي.");
+  const gl = gradsOf(b); if(gl.length) L.push("", "## التدرجات اللونية", ...gl.map(g => `- ${g.name||"تدرج"}${g.use?` (${g.use})`:""}: ${gradCss(g)}`));
+  if((b.fonts||[]).length) L.push("", "## الخطوط", ...b.fonts.map(fontLine));
+  if(S.filesFor === b.id){ const lg = S.files.filter(f=>f.category==="logo"); if(lg.length) L.push("", "## نسخ الشعار المعتمدة", ...lg.map(f=>`- ${f.title||f.filename}${f.variant?` (${f.variant})`:""} — ${(f.ext||extOf(f.filename)).toUpperCase()}`)); }
+  if(String(R.digital||"").trim()) L.push("", "## ضوابط الإنتاج الرقمي", R.digital.trim());
+  if(String(R.print||"").trim()) L.push("", "## ضوابط الإنتاج المطبوع", R.print.trim());
+  if(lines(R.dos).length) L.push("", "## افعل", ...lines(R.dos).map(x=>"- "+x));
+  if(lines(R.donts).length) L.push("", "## لا تفعل", ...lines(R.donts).map(x=>"- "+x));
+  if(String(R.voice||"").trim()) L.push("", "## نبرة الخطاب والكتابة", R.voice.trim());
+  if(!isM && m){
+    const mc = (m.colors||[]).map(colorLine).filter(Boolean); const mf = (m.fonts||[]).map(fontLine);
+    L.push("", `## الارتباط بالهوية الأم («${m.name}»)`, "هذه عناصر الهوية الأم التي يجب أن يبقى التصميم منسجمًا معها:");
+    if(mc.length) L.push("الألوان الأم:", ...mc);
+    if(mf.length) L.push("الخطوط الأم:", ...mf);
+    if(lines(m.rules?.donts).length) L.push("محظورات الهوية الأم:", ...lines(m.rules.donts).map(x=>"- "+x));
+  }
+  if(String(b.prompt||"").trim()) L.push("", "## تعليمات إضافية", b.prompt.trim());
+  L.push("", "## قبل البدء", "- اقرأ المواصفات كاملة والتزم بالألوان والخطوط كما هي.", "- استخدم الشعار من الملفات المعتمدة فقط، ولا تُعِد رسمه أو تغيّر نسبه أو ألوانه.", "- إذا نقصك ملف أو معلومة فاطلبها قبل التنفيذ ولا تفترضها.");
+  return L.join("\n");
+}
+
+/* ---------- data ---------- */
+function subBrands(){
+  const t = setTimeout(()=>{ if(!S.loaded){ S.dbState = "slow"; render(); } }, 10000);
+  S.db.collection("brands").onSnapshot(snap => {
+    S.brands = snap.docs.map(d => ({id:d.id, ...d.data()})).sort(sortBrands);
+    if(!snap.metadata.fromCache){ S.loaded = true; S.dbState = "ok"; clearTimeout(t); }
+    render();
+  }, e => { clearTimeout(t); S.loaded = true; S.dbState = "error"; render(); });
+}
+function ensureFiles(id){
+  if(S.filesFor === id) return;
+  if(S.filesUnsub){ S.filesUnsub(); S.filesUnsub = null; }
+  S.files = []; S.filesLoaded = false; S.filesFor = id; S.fileFilter = "all";
+  if(!S.db || !id) return;
+  S.filesUnsub = S.db.collection("brands/" + id + "/files").onSnapshot(snap => {
+    S.files = snap.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b)=>String(a.createdAt||"").localeCompare(String(b.createdAt||"")));
+    S.filesLoaded = true; if(S.filesFor === id) renderMain();
+  }, () => { S.filesLoaded = true; renderMain(); });
+}
+const brandRef = id => S.db.doc("brands/" + id);
+const fileCol = id => S.db.collection("brands/" + id + "/files");
+async function touch(id, data){ await brandRef(id).update({...data, updatedAt: now()}); }
+
+async function fetchBlob(assetId){ const r = await fetch(blobUrl(assetId)); if(!r.ok) throw {userMsg:"تعذّر جلب الملف."}; return r.blob(); }
+async function saveAs(name, data){
+  try { await S.downloads.save({filename:name, data}); toast("تم التحميل"); }
+  catch(e){ if(e && e.code === "declined") return; toast(e && e.code === "rate_limited" ? "انتظر قليلًا ثم أعد المحاولة" : "تعذّر التحميل في هذا العرض"); }
+}
+const safeName = s => String(s||"file").replace(/[\\/:*?"<>|]+/g,"-").trim().slice(0,120);
+
+async function exportImg(b, f, fmt, size){
+  toast("جارٍ التجهيز…");
+  try {
+    const img = new Image(); img.src = blobUrl(f.assetId); await img.decode();
+    let w = img.naturalWidth, h = img.naturalHeight;
+    if(f.contentType === "image/svg+xml"){ if(!w || !h){ w = 1000; h = 1000; } h = Math.round(h * size / w); w = size; }
+    else { w = Math.round(w*size); h = Math.round(h*size); }
+    const cap = 8000; if(Math.max(w,h) > cap){ const k = cap/Math.max(w,h); w = Math.round(w*k); h = Math.round(h*k); }
+    const c = document.createElement("canvas"); c.width = w; c.height = h; const ctx = c.getContext("2d");
+    if(fmt === "jpg"){ ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0,0,w,h); }
+    ctx.drawImage(img,0,0,w,h);
+    const mime = fmt === "jpg" ? "image/jpeg" : fmt === "webp" ? "image/webp" : "image/png";
+    const blob = await new Promise(r => c.toBlob(r, mime, .92));
+    if(!blob) throw 0;
+    await saveAs(`${safeName(b.name)} - ${safeName(f.title||"logo")} - ${w}px.${fmt}`, blob);
+  } catch { toast("تعذّر تحويل الصورة"); }
+}
+
+/* ---------- modal ---------- */
+function modal({title, body, saveLabel="حفظ", onSave, onOpen, wide}){
+  const wrap = document.createElement("div"); wrap.className = "modal-wrap";
+  wrap.innerHTML = `<div class="modal ${wide?"wide":""}" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header><h2>${esc(title)}</h2><button class="icon-btn" data-close aria-label="إغلاق">✕</button></header><div class="modal-body">${body}</div><p class="modal-err" hidden></p><footer>${onSave?`<button class="btn primary" data-save>${esc(saveLabel)}</button>`:""}<button class="btn ghost" data-close>إلغاء</button></footer></div>`;
+  $("#app").appendChild(wrap);
+  const close = () => wrap.remove();
+  wrap.addEventListener("mousedown", e => { if(e.target === wrap) close(); });
+  wrap.addEventListener("click", e => { if(e.target.closest("[data-close]")) close(); });
+  const err = wrap.querySelector(".modal-err"); const sb = wrap.querySelector("[data-save]");
+  wrap.fail = m => { err.textContent = m; err.hidden = false; };
+  sb && sb.addEventListener("click", async () => {
+    err.hidden = true; sb.disabled = true; const old = sb.textContent; sb.textContent = "جارٍ الحفظ…";
+    try { const r = await onSave(wrap, t => { sb.textContent = t; }); if(r !== false) close(); }
+    catch(e){ console.error(e); wrap.fail(msgFor(e)); }
+    finally { sb.disabled = false; sb.textContent = old; }
+  });
+  onOpen && onOpen(wrap);
+  const first = wrap.querySelector(".modal-body input:not([type=radio]):not([type=file]),.modal-body textarea"); first && first.focus();
+  return wrap;
+}
+document.addEventListener("keydown", e => { if(e.key === "Escape"){ const w = [...document.querySelectorAll(".modal-wrap")].pop(); w && w.remove(); } });
+const val = (w,s) => (w.querySelector(s)?.value ?? "").trim();
+const fail = m => { throw {userMsg:m}; };
+
+/* new brand */
+function newBrand(kind){
+  const m = master();
+  modal({title: kind==="master"?"إنشاء الهوية الأم":SECT[kind].newTitle, saveLabel:"إنشاء الصفحة",
+    body:`<label class="field"><span>الاسم بالعربية</span><input id="n-name" value="${kind==="master"?"أكاديمية هندسة الأجيال":""}"></label>
+      <label class="field"><span>الاسم بالإنجليزية <small>(اختياري)</small></span><input id="n-en" dir="ltr"></label>
+      <label class="field"><span>نبذة قصيرة</span><textarea id="n-sum" rows="3" placeholder="${kind==="project"?"ما هذا المشروع أو الفريق، ولمن يقدّم خدماته؟":`لمن هذا ${kind==="product"?"المنتج":"البرنامج"}، وما طابعه البصري؟`}"></textarea></label>
+      ${kind!=="master"&&m?`<label class="check"><input type="checkbox" id="n-clone" checked><span>ابدأ من الهوية الأم: انسخ ألوانها وخطوطها وضوابطها كنقطة بداية، ثم عدّل الفروق.</span></label>`:""}`,
+    onSave: async w => {
+      const name = val(w,"#n-name"); if(!name) fail("اكتب الاسم أولًا.");
+      const id = kind === "master" ? "master" : uid(SECT[kind].prefix);
+      const doc = {name, nameEn:val(w,"#n-en"), summary:val(w,"#n-sum"), kind, order:Date.now(), colors:[], fonts:[], rules:{}, prompt:"", createdAt:now(), updatedAt:now()};
+      if(m && w.querySelector("#n-clone")?.checked){ doc.colors = JSON.parse(JSON.stringify(m.colors||[])); doc.gradients = JSON.parse(JSON.stringify(m.gradients||[])); doc.fonts = JSON.parse(JSON.stringify(m.fonts||[])); doc.rules = JSON.parse(JSON.stringify(m.rules||{})); }
+      await brandRef(id).set(doc); location.hash = "b-" + id; toast("تم إنشاء الصفحة");
+    }});
+}
+
+/* info */
+function editInfo(b){
+  const isM = b.kind === "master";
+  const w = modal({title:"بيانات الهوية",
+    body:`<label class="field"><span>الاسم بالعربية</span><input id="i-name" value="${esc(b.name)}"></label>
+      <label class="field"><span>الاسم بالإنجليزية</span><input id="i-en" dir="ltr" value="${esc(b.nameEn||"")}"></label>
+      ${!isM?`<label class="field"><span>النوع</span><select id="i-kind">${KIND_ORDER.map(k=>`<option value="${k}" ${b.kind===k?"selected":""}>${SECT[k].one==="مشروع"?"مشروع / فريق بإشراف الأكاديمية":SECT[k].one}</option>`).join("")}</select></label>`:""}
+      <label class="field"><span>نبذة</span><textarea id="i-sum" rows="4">${esc(b.summary||"")}</textarea></label>
+      <label class="field"><span>رابط مجلد درايف للهوية <small>(للملفات الكبيرة والمصدرية)</small></span><input id="i-drive" dir="ltr" placeholder="https://drive.google.com/…" value="${esc(b.driveFolder||"")}"></label>
+      ${!isM?`<div class="danger-zone"><span class="hint">حذف الصفحة يحذف ملفاتها المرفوعة نهائيًا.</span><button class="btn sm danger" id="i-del">حذف الصفحة</button></div>`:""}`,
+    onSave: async w => {
+      const name = val(w,"#i-name"); if(!name) fail("الاسم مطلوب.");
+      const drive = val(w,"#i-drive"); if(drive && !/^https:\/\//i.test(drive)) fail("رابط درايف يجب أن يبدأ بـ https://");
+      const d = {name, nameEn:val(w,"#i-en"), summary:val(w,"#i-sum"), driveFolder:drive};
+      if(!isM) d.kind = val(w,"#i-kind") || b.kind;
+      await touch(b.id, d); toast("تم الحفظ");
+    }});
+  const del = w.querySelector("#i-del");
+  del && del.addEventListener("click", async () => {
+    if(!del.dataset.sure){ del.dataset.sure = "1"; del.textContent = "تأكيد الحذف النهائي"; return; }
+    del.disabled = true; del.textContent = "جارٍ الحذف…";
+    try {
+      const snap = await fileCol(b.id).get();
+      for(const d of snap.docs){ const f = d.data(); if(f.assetId && S.assets){ try { await S.assets.delete(f.assetId); } catch {} } await fileCol(b.id).doc(d.id).delete(); }
+      for(const f of (b.fonts||[])) if(f.assetId && !fontRefElsewhere(f.assetId, b.id) && S.assets){ try { await S.assets.delete(f.assetId); } catch {} }
+      await brandRef(b.id).delete(); w.remove(); location.hash = (SECT[b.kind]||SECT.program).hash; toast("تم حذف الصفحة");
+    } catch(e){ w.fail(msgFor(e)); del.disabled = false; }
+  });
+}
+const fontRefElsewhere = (assetId, exceptId) => S.brands.some(x => x.id !== exceptId && (x.fonts||[]).some(f => f.assetId === assetId));
+
+/* colors */
+function editColors(b){
+  let rows = (b.colors||[]).map(c => ({...c}));
+  const body = `<p class="hint">أول لون في القائمة هو اللون الأساسي ويظهر في رأس الصفحة. يُحسب CMYK تلقائيًا إن تركته فارغًا، ويُفضّل إدخال قيمة المطبعة المعتمدة إن وُجدت.</p>
+    <div class="ed-list" id="crows"></div><div class="row"><button class="btn sm" data-m="add">+ إضافة لون</button></div>
+    <label class="field"><span>لصق مجموعة أكواد <small>(اختياري، تُضاف كألوان جديدة)</small></span><textarea id="cpaste" rows="2" dir="ltr" placeholder="#1B2A6B, #F2B705, #0E9F8C"></textarea></label>`;
+  const draw = w => {
+    w.querySelector("#crows").innerHTML = rows.length ? rows.map((c,i) => `<div class="ed-row c" data-i="${i}">
+      <input type="color" data-f="pick" value="${(hexNorm(c.hex)||"#000000").toLowerCase()}" aria-label="منتقي اللون">
+      <input data-f="hex" dir="ltr" class="mono" value="${esc(c.hex||"")}" placeholder="#000000" aria-label="HEX">
+      <input data-f="name" value="${esc(c.name||"")}" placeholder="اسم اللون" aria-label="اسم اللون">
+      <select data-f="role" aria-label="دور اللون">${COLOR_ROLES.map(r=>`<option ${r===c.role?"selected":""}>${r}</option>`).join("")}</select>
+      <input data-f="cmyk" dir="ltr" value="${esc(c.cmyk||"")}" placeholder="CMYK مثل 100, 80, 0, 20" aria-label="CMYK">
+      <input data-f="pantone" dir="ltr" value="${esc(c.pantone||"")}" placeholder="Pantone" aria-label="Pantone">
+      <div class="row-tools"><button class="icon-btn" data-m="up" title="أعلى" aria-label="تحريك لأعلى">↑</button><button class="icon-btn" data-m="down" title="أسفل" aria-label="تحريك لأسفل">↓</button><button class="icon-btn" data-m="del" title="حذف" aria-label="حذف">✕</button></div></div>`).join("") : `<p class="hint">لا توجد ألوان بعد.</p>`;
+  };
+  modal({title:"ألوان " + b.name, wide:true, body,
+    onOpen: w => {
+      draw(w);
+      w.addEventListener("input", e => { const r = e.target.closest(".ed-row"); if(!r) return; const i = +r.dataset.i, f = e.target.dataset.f;
+        if(f === "pick"){ rows[i].hex = e.target.value.toUpperCase(); r.querySelector('[data-f=hex]').value = rows[i].hex; }
+        else { rows[i][f] = e.target.value; if(f === "hex"){ const n = hexNorm(e.target.value); if(n) r.querySelector('[data-f=pick]').value = n.toLowerCase(); } } });
+      w.addEventListener("click", e => { const t = e.target.closest("[data-m]"); if(!t) return; const r = t.closest(".ed-row"); const i = r ? +r.dataset.i : -1; const m = t.dataset.m;
+        if(m === "add") rows.push({hex:"#000000", name:"", role: rows.length ? "ثانوي" : "أساسي"});
+        if(m === "del") rows.splice(i,1);
+        if(m === "up" && i > 0) [rows[i-1], rows[i]] = [rows[i], rows[i-1]];
+        if(m === "down" && i < rows.length-1) [rows[i+1], rows[i]] = [rows[i], rows[i+1]];
+        draw(w); });
+    },
+    onSave: async w => {
+      const pasted = (val(w,"#cpaste").match(/#?\b[0-9a-f]{6}\b/gi)||[]).map(hexNorm).filter(Boolean);
+      pasted.forEach(h => rows.push({hex:h, name:"", role:"مساعد"}));
+      const bad = rows.find(c => !hexNorm(c.hex)); if(bad) fail(`الكود «${bad.hex}» غير صالح. استخدم صيغة مثل #1B2A6B.`);
+      const out = rows.map(c => ({hex:hexNorm(c.hex), name:(c.name||"").trim(), role:c.role||"", cmyk:(c.cmyk||"").trim(), pantone:(c.pantone||"").trim()}));
+      await touch(b.id, {colors:out}); toast("تم حفظ الألوان");
+    }});
+}
+
+/* fonts */
+function editFonts(b){
+  let rows = (b.fonts||[]).map(f => ({...f, _k:uid("k")}));
+  const pending = {};
+  const draw = w => {
+    w.querySelector("#frows").innerHTML = rows.length ? rows.map((f,i) => `<div class="ed-row f" data-i="${i}">
+      <label class="field"><span>اسم الخط</span><input data-f="name" dir="auto" value="${esc(f.name||"")}" placeholder="مثل: Alexandria"></label>
+      <label class="field"><span>الاستخدام</span><select data-f="role">${FONT_ROLES.map(r=>`<option ${r===f.role?"selected":""}>${r}</option>`).join("")}</select></label>
+      <label class="field"><span>الأوزان المعتمدة</span><input data-f="weights" dir="ltr" value="${esc(f.weights||"")}" placeholder="Regular 400, Bold 700"></label>
+      <label class="field"><span>رابط درايف لحزمة الخط <small>(اختياري)</small></span><input data-f="driveUrl" dir="ltr" value="${esc(f.driveUrl||"")}" placeholder="https://drive.google.com/…"></label>
+      <label class="field full"><span>ملاحظات الاستخدام</span><input data-f="usage" value="${esc(f.usage||"")}" placeholder="مثل: العناوين الرئيسية فقط، لا يُستخدم تحت 14pt"></label>
+      <label class="field full"><span>ملف الخط للمعاينة والتحميل <small>(TTF أو OTF أو WOFF، حتى 20 ميجابايت)</small></span>
+        ${S.assets?`<input type="file" data-f="file" accept=".ttf,.otf,.woff,.woff2">`:`<span class="hint">الرفع غير متاح في هذا العرض؛ استخدم رابط درايف.</span>`}
+        <small>${pending[f._k]?"سيُرفع: "+esc(pending[f._k].name):f.filename?"الملف الحالي: "+esc(f.filename):"لا يوجد ملف مرفوع"}</small></label>
+      <label class="check full"><input type="checkbox" data-f="google" ${f.google?"checked":""}><span>متوفر على Google Fonts (تُحمَّل المعاينة من هناك)</span></label>
+      <div class="row-tools full">${f.assetId?`<button class="btn sm ghost" data-m="rmfile">إزالة الملف المرفوع</button>`:""}<button class="icon-btn" data-m="up" aria-label="تحريك لأعلى">↑</button><button class="icon-btn" data-m="down" aria-label="تحريك لأسفل">↓</button><button class="icon-btn" data-m="del" aria-label="حذف الخط">✕</button></div></div>`).join("") : `<p class="hint">لا توجد خطوط بعد.</p>`;
+  };
+  modal({title:"خطوط " + b.name, wide:true, body:`<div class="ed-list" id="frows"></div><div class="row"><button class="btn sm" data-m="add">+ إضافة خط</button></div>`,
+    onOpen: w => {
+      draw(w);
+      w.addEventListener("input", e => { const r = e.target.closest(".ed-row"); if(!r) return; const f = e.target.dataset.f; if(!f || f === "file") return; const row = rows[+r.dataset.i]; row[f] = e.target.type === "checkbox" ? e.target.checked : e.target.value; });
+      w.addEventListener("change", e => { if(e.target.dataset.f !== "file") return; const r = e.target.closest(".ed-row"); const row = rows[+r.dataset.i]; const file = e.target.files[0]; if(!file) return;
+        const ext = extOf(file.name);
+        if(!FONT_EXT.has(ext)){ w.fail("صيغة الخط غير مدعومة للرفع. ارفع TTF أو OTF أو WOFF، أو ضع حزمة الخط (ZIP) على درايف وأضف الرابط."); e.target.value = ""; return; }
+        if(file.size > limitFor(ext)){ w.fail("الملف أكبر من 20 ميجابايت. ضعه على درايف وأضف الرابط."); e.target.value = ""; return; }
+        pending[row._k] = file; if(!row.name) row.name = file.name.replace(/\.[^.]+$/,"").replace(/[-_]/g," "); draw(w); });
+      w.addEventListener("click", e => { const t = e.target.closest("[data-m]"); if(!t) return; const r = t.closest(".ed-row"); const i = r ? +r.dataset.i : -1; const m = t.dataset.m;
+        if(m === "add") rows.push({name:"", role: rows.length ? "النصوص" : "العناوين", _k:uid("k")});
+        if(m === "del"){ delete pending[rows[i]._k]; rows.splice(i,1); }
+        if(m === "rmfile"){ rows[i].assetId = ""; rows[i].filename = ""; rows[i].contentType = ""; }
+        if(m === "up" && i > 0) [rows[i-1], rows[i]] = [rows[i], rows[i-1]];
+        if(m === "down" && i < rows.length-1) [rows[i+1], rows[i]] = [rows[i], rows[i+1]];
+        draw(w); });
+    },
+    onSave: async (w, step) => {
+      for(const f of rows){ if(!String(f.name||"").trim() && !pending[f._k]) fail("اكتب اسم كل خط أو احذف الصف الفارغ."); if(f.driveUrl && !/^https:\/\//i.test(f.driveUrl.trim())) fail("روابط درايف يجب أن تبدأ بـ https://"); }
+      for(const f of rows){ const file = pending[f._k]; if(!file) continue; step("جارٍ رفع " + file.name + "…"); const ext = extOf(file.name);
+        const up = await S.assets.upload(file, {type: TYPES[ext]}); f.assetId = up.id; f.filename = file.name; f.contentType = up.contentType; delete pending[f._k]; }
+      const out = rows.map(({_k, ...f}) => ({name:String(f.name||"").trim(), role:f.role||"", weights:(f.weights||"").trim(), usage:(f.usage||"").trim(), driveUrl:(f.driveUrl||"").trim(), google:!!f.google, assetId:f.assetId||"", filename:f.filename||"", contentType:f.contentType||""}));
+      const kept = new Set(out.map(f=>f.assetId).filter(Boolean));
+      const removed = (b.fonts||[]).map(f=>f.assetId).filter(id => id && !kept.has(id) && !fontRefElsewhere(id, b.id) && !S.files.some(x => x.assetId === id));
+      await touch(b.id, {fonts:out});
+      for(const id of removed) if(S.assets){ try { await S.assets.delete(id); } catch {} }
+      toast("تم حفظ الخطوط");
+    }});
+}
+
+/* rules */
+function editRules(b){
+  const R = b.rules||{};
+  const ta = (id,label,hint,v,rows=5) => `<label class="field"><span>${label} <small>${hint}</small></span><textarea id="${id}" rows="${rows}">${esc(v||"")}</textarea></label>`;
+  modal({title:"ضوابط " + b.name, wide:true,
+    body:`<div class="two">${ta("r-digital","الإنتاج الرقمي","(مقاسات المنصات، مساحة الحماية، الحد الأدنى بالبكسل…)",R.digital,7)}${ta("r-print","الإنتاج المطبوع","(CMYK، الدقة 300dpi، النزف 3mm، نوع الورق…)",R.print,7)}</div>
+      <div class="two">${ta("r-dos","افعل","(كل بند في سطر)",R.dos)}${ta("r-donts","لا تفعل","(كل بند في سطر)",R.donts)}</div>
+      ${ta("r-voice","نبرة الخطاب والكتابة","(الأسلوب، المصطلحات المعتمدة، العربية أم الإنجليزية…)",R.voice,3)}`,
+    onSave: async w => { await touch(b.id, {rules:{digital:val(w,"#r-digital"), print:val(w,"#r-print"), dos:val(w,"#r-dos"), donts:val(w,"#r-donts"), voice:val(w,"#r-voice")}}); toast("تم حفظ الضوابط"); }});
+}
+
+/* prompt */
+function editPrompt(b){
+  modal({title:"برومبت " + b.name, wide:true,
+    body:`<label class="field"><span>تعليمات إضافية <small>(تُضاف إلى البرومبت المُولَّد تلقائيًا من بيانات الهوية)</small></span><textarea id="p-extra" rows="5" placeholder="مثل: الفئة المستهدفة أولياء الأمور، الطابع دافئ وتعليمي، تجنّب الصور الكرتونية…">${esc(b.prompt||"")}</textarea></label>
+      <label class="field"><span>البرومبت المعتمد <small>(اختياري: إن كتبته يظهر أولًا للفريق بدل المُولَّد)</small></span><textarea id="p-final" rows="10">${esc(b.promptFinal||"")}</textarea></label>`,
+    onSave: async w => { await touch(b.id, {prompt:val(w,"#p-extra"), promptFinal:val(w,"#p-final")}); S.promptView = null; toast("تم حفظ البرومبت"); }});
+}
+async function aiPrompt(b){
+  if(!S.sample || S.aiBusy) return;
+  const base = buildPrompt(b);
+  S.aiBusy = true; S.aiDraft = ""; S.promptView = "ai"; renderMain();
+  const instr = `أعد صياغة مواصفات الهوية التالية كبرومبت احترافي واحد باللغة العربية، يُعطى لمصمم أو لأداة ذكاء اصطناعي قبل بدء أي مشروع تصميم رقمي أو مطبوع.
+- حافظ على كل الأسماء والأكواد والأرقام كما هي حرفيًا.
+- لا تضف ألوانًا أو خطوطًا أو قواعد غير موجودة في المواصفات.
+- نظّمه في أقسام واضحة بعناوين Markdown، وابدأ بتعريف الدور والسياق.
+- أعد البرومبت فقط دون مقدمة أو تعليق.
+
+---
+${base}`;
+  try {
+    const r = await S.sample(instr, {cache:false, onText: ({text}) => { S.aiDraft = text; const el = document.getElementById("promptText"); if(el && S.promptView === "ai") el.textContent = text; }});
+    S.aiDraft = r.text;
+  } catch(e){
+    S.aiDraft = null; S.promptView = null;
+    if(e && e.code === "not_granted") S.sample = null;
+    toast(e && e.code === "rate_limited" ? "طلبات كثيرة، حاول بعد قليل" : "تعذّرت الصياغة الآن");
+  } finally { S.aiBusy = false; renderMain(); }
+}
+
+/* files */
+function addFile(b, cat){
+  let picked = [];
+  const canUp = !!S.assets;
+  const body = `<div class="seg" role="radiogroup" aria-label="مصدر الملف">
+      <label><input type="radio" name="src" value="up" ${canUp?"checked":"disabled"}> رفع إلى الموقع</label>
+      <label><input type="radio" name="src" value="drive" ${canUp?"":"checked"}> رابط درايف</label></div>
+    <div id="src-up" ${canUp?"":"hidden"}>
+      <label class="drop" id="drop"><input type="file" id="fin" multiple><b>اسحب الملفات هنا أو انقر للاختيار</b><small>يمكن اختيار عدة ملفات دفعة واحدة · حتى 20 ميجابايت للملف (SVG حتى 2)</small><small>PNG · JPG · SVG · WEBP · PDF · MP4 · TTF/OTF/WOFF</small></label>
+      <ul class="picked" id="picked"></ul></div>
+    <div id="src-drive" ${canUp?"hidden":""} class="ed-list">
+      <p class="hint">للملفات الكبيرة أو المصدرية (AI، PSD، INDD، EPS، ZIP): ارفعها على درايف، اجعل الرابط متاحًا للفريق، ثم الصقه هنا.</p>
+      <label class="field"><span>رابط الملف على درايف</span><input id="d-url" dir="ltr" placeholder="https://drive.google.com/…"></label>
+      <div class="two"><label class="field"><span>الصيغة</span><input id="d-ext" dir="ltr" placeholder="AI, PSD, ZIP…"></label><label class="field"><span>الحجم <small>(اختياري)</small></span><input id="d-size" dir="ltr" placeholder="85 MB"></label></div></div>
+    <label class="field"><span>العنوان <small id="t-hint">(عند رفع عدة ملفات يُستخدم اسم كل ملف)</small></span><input id="f-title" placeholder="مثل: الشعار الأفقي الملون"></label>
+    <div class="two"><label class="field"><span>التصنيف</span><select id="f-cat">${Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${k===cat?"selected":""}>${v}</option>`).join("")}</select></label>
+      <label class="field"><span>النسخة / الوصف المختصر</span><input id="f-var" placeholder="أفقي · ملون · للخلفيات الفاتحة"></label></div>
+    <label class="field"><span>ملاحظة للمصمم <small>(اختياري)</small></span><input id="f-note" placeholder="مثل: يُستخدم في المطبوعات فقط"></label>`;
+  const drawPicked = w => {
+    w.querySelector("#picked").innerHTML = picked.map(p => `<li class="${p.ok?"":"bad"}"><span>${esc(p.file.name)}</span><span class="mono">${p.ok?fmtSize(p.file.size):p.why}</span></li>`).join("");
+    const bad = picked.filter(p=>!p.ok).length;
+    if(bad) w.fail(`${bad} ملف لا يمكن رفعه مباشرة (حجم كبير أو صيغة غير مدعومة). ضعه على درايف وأضفه كرابط بعد حفظ البقية.`); else w.querySelector(".modal-err").hidden = true;
+  };
+  const take = (w, files) => {
+    picked = [...files].map(file => { const ext = extOf(file.name); const ok = !!TYPES[ext] && file.size <= limitFor(ext) && file.size > 0;
+      return {file, ext, ok, why: !TYPES[ext] ? `صيغة ${ext.toUpperCase()||"?"} ← درايف` : file.size > limitFor(ext) ? `${fmtSize(file.size)} ← درايف` : "ملف فارغ"}; });
+    if(picked.length === 1 && !val(w,"#f-title")) w.querySelector("#f-title").value = picked[0].file.name.replace(/\.[^.]+$/,"");
+    drawPicked(w);
+  };
+  modal({title:"إضافة ملفات إلى " + b.name, saveLabel:"حفظ", body,
+    onOpen: w => {
+      w.addEventListener("change", e => {
+        if(e.target.name === "src"){ const up = e.target.value === "up"; w.querySelector("#src-up").hidden = !up; w.querySelector("#src-drive").hidden = up; }
+        if(e.target.id === "fin") take(w, e.target.files);
+      });
+      const d = w.querySelector("#drop");
+      if(d){ ["dragenter","dragover"].forEach(t => d.addEventListener(t, e => { e.preventDefault(); d.classList.add("over"); }));
+        ["dragleave","drop"].forEach(t => d.addEventListener(t, () => d.classList.remove("over")));
+        d.addEventListener("drop", e => { e.preventDefault(); if(e.dataTransfer?.files?.length) take(w, e.dataTransfer.files); }); }
+    },
+    onSave: async (w, step) => {
+      const src = w.querySelector("input[name=src]:checked")?.value;
+      const category = val(w,"#f-cat"), variant = val(w,"#f-var"), note = val(w,"#f-note"), title = val(w,"#f-title");
+      if(src === "drive"){
+        const url = val(w,"#d-url"); if(!/^https:\/\//i.test(url)) fail("الصق رابطًا صحيحًا يبدأ بـ https://");
+        if(!title) fail("اكتب عنوانًا للملف.");
+        await fileCol(b.id).doc(uid("f")).set({title, category, variant, note, driveUrl:url, ext:val(w,"#d-ext").replace(/^\./,"").toLowerCase(), sizeText:val(w,"#d-size"), createdAt:now()});
+        await touch(b.id, {}); toast("تمت إضافة الرابط"); return;
+      }
+      const ok = picked.filter(p=>p.ok); if(!ok.length) fail(picked.length ? "لا يوجد ملف صالح للرفع المباشر. استخدم رابط درايف." : "اختر ملفًا أولًا.");
+      let cover = b.coverAsset; let n = 0;
+      for(const p of ok){
+        n++; step(`جارٍ رفع ${n} من ${ok.length}…`);
+        const up = await S.assets.upload(p.file, {type: TYPES[p.ext]});
+        const t = ok.length === 1 && title ? title : p.file.name.replace(/\.[^.]+$/,"");
+        await fileCol(b.id).doc(uid("f")).set({title:t, category, variant, note, assetId:up.id, filename:p.file.name, ext:p.ext, contentType:up.contentType, sizeBytes:up.sizeBytes, createdAt:now()});
+        p.done = true;
+        if(!cover && category === "logo" && /^image\//.test(up.contentType)) cover = up.id;
+      }
+      await touch(b.id, cover && cover !== b.coverAsset ? {coverAsset:cover} : {});
+      picked = picked.filter(p => !p.done);
+      toast(`تم رفع ${ok.length} ${ok.length===1?"ملف":"ملفات"}`);
+      if(picked.length){ drawPicked(w); w.querySelector("input[value=drive]").click(); return false; }
+    }});
+}
+function editFile(b, f){
+  const w = modal({title:"تعديل الملف",
+    body:`<label class="field"><span>العنوان</span><input id="e-title" value="${esc(f.title||"")}"></label>
+      <div class="two"><label class="field"><span>التصنيف</span><select id="e-cat">${Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${k===f.category?"selected":""}>${v}</option>`).join("")}</select></label>
+      <label class="field"><span>النسخة / الوصف</span><input id="e-var" value="${esc(f.variant||"")}"></label></div>
+      <label class="field"><span>ملاحظة</span><input id="e-note" value="${esc(f.note||"")}"></label>
+      ${f.driveUrl?`<label class="field"><span>رابط درايف</span><input id="e-url" dir="ltr" value="${esc(f.driveUrl)}"></label>`:""}
+      ${isImg(f)?`<label class="check"><input type="checkbox" id="e-cover" ${b.coverAsset===f.assetId?"checked":""}><span>اجعله الشعار الرئيسي لهذه الصفحة (يظهر في الرأس والبطاقات)</span></label>`:""}
+      <div class="danger-zone"><span class="hint">${f.assetId?"الحذف يزيل الملف من الموقع نهائيًا.":"الحذف يزيل الرابط فقط، والملف يبقى على درايف."}</span><button class="btn sm danger" id="e-del">حذف الملف</button></div>`,
+    onSave: async w => {
+      const d = {title:val(w,"#e-title"), category:val(w,"#e-cat"), variant:val(w,"#e-var"), note:val(w,"#e-note")};
+      if(f.driveUrl){ const u = val(w,"#e-url"); if(!/^https:\/\//i.test(u)) fail("الرابط يجب أن يبدأ بـ https://"); d.driveUrl = u; }
+      await fileCol(b.id).doc(f.id).update(d);
+      const cv = w.querySelector("#e-cover");
+      if(cv){ if(cv.checked && b.coverAsset !== f.assetId) await touch(b.id, {coverAsset:f.assetId}); else if(!cv.checked && b.coverAsset === f.assetId) await touch(b.id, {coverAsset:""}); }
+      toast("تم الحفظ");
+    }});
+  const del = w.querySelector("#e-del");
+  del.addEventListener("click", async () => {
+    if(!del.dataset.sure){ del.dataset.sure = "1"; del.textContent = "تأكيد الحذف النهائي"; return; }
+    del.disabled = true;
+    try {
+      await fileCol(b.id).doc(f.id).delete();
+      const usedByFont = S.brands.some(x => (x.fonts||[]).some(ff => ff.assetId === f.assetId));
+      if(f.assetId && S.assets && !usedByFont){ try { await S.assets.delete(f.assetId); } catch {} }
+      if(b.coverAsset && b.coverAsset === f.assetId){ const next = S.files.find(x => x.id !== f.id && x.category === "logo" && isImg(x)); await touch(b.id, {coverAsset: next ? next.assetId : ""}); }
+      w.remove(); toast("تم حذف الملف");
+    } catch(e){ w.fail(msgFor(e)); del.disabled = false; }
+  });
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-act]"); if(!t || t.closest(".modal-wrap")) return;
+  const a = t.dataset.act; const b = curBrand(); const f = t.dataset.id ? S.files.find(x => x.id === t.dataset.id) : null;
+  const menu = t.closest("details.menu"); if(menu) menu.removeAttribute("open");
+  switch(a){
+    case "copy": copy(t.dataset.text, t.dataset.label); break;
+    case "jump": document.getElementById(t.dataset.to)?.scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"}); break;
+    case "new-brand": if(S.canEdit) newBrand(t.dataset.kind); break;
+    case "edit-info": b && editInfo(b); break;
+    case "edit-colors": b && editColors(b); break;
+    case "edit-fonts": b && editFonts(b); break;
+    case "edit-grads": b && editGradients(b); break;
+    case "dl-grad": { const g = gradsOf(b)[+t.dataset.i]; if(g && S.downloads) saveAs(`${safeName(b.name)} - ${safeName(g.name||"gradient")}.svg`, gradSvg(g)); break; }
+    case "edit-rules": b && editRules(b); break;
+    case "edit-prompt": b && editPrompt(b); break;
+    case "add-file": b && addFile(b, t.dataset.cat); break;
+    case "edit-file": b && f && editFile(b, f); break;
+    case "filter": S.fileFilter = t.dataset.cat; renderMain(); break;
+    case "bg": if(f){ const order = ["checker","light","dark","brand"]; S.tileBg[f.id] = order[(order.indexOf(S.tileBg[f.id]||"checker")+1) % order.length]; const art = t.closest(".tile").querySelector(".tile-art"); art.className = "tile-art bg-" + S.tileBg[f.id]; if(S.tileBg[f.id]==="brand") art.style.setProperty("--band", primaryOf(b)||"#003375"); } break;
+    case "dl": if(f && f.assetId && S.downloads){ const ex = f.ext || extOf(f.filename);
+      if(SAVE_EXT.has(ex)) fetchBlob(f.assetId).then(bl => saveAs(`${safeName(b?.name)} - ${safeName(f.title||f.filename)}.${ex}`, bl)).catch(()=>toast("تعذّر جلب الملف"));
+      else zipSave(`${safeName(b?.name)} - ${safeName(f.title||f.filename)}.zip`, z => addFiles(z, "", [f])); } break;
+    case "pack": if(b) packZip(b, t.dataset.k); break;
+    case "exp": if(f && b) exportImg(b, f, t.dataset.fmt, +t.dataset.s); break;
+    case "dl-font": { const ff = b?.fonts?.[+t.dataset.i]; if(ff && S.downloads) zipSave(`${zipName(ff.name||"font")}.zip`, async z => { const list = await collectFamily(b, ff); await addFiles(z, zipName(ff.name||"font"), list); }); break; }
+    case "copy-css": if(b){ const css = ":root {\n" + (b.colors||[]).map((c,i)=>{ const h = hexNorm(c.hex); if(!h) return null; const n = (c.name||"").trim() ? c.name.trim().replace(/\s+/g,"-") : "color-" + (i+1); return `  --${n}: ${h};`; }).filter(Boolean).join("\n") + "\n}"; copy(css, "متغيرات CSS"); } break;
+    case "copy-hexes": if(b) copy((b.colors||[]).map(c => `${c.name||"لون"}: ${hexNorm(c.hex)}`).join("\n"), "كل الأكواد"); break;
+    case "copy-prompt": copy($("#promptText")?.textContent || "", "البرومبت"); break;
+    case "prompt-view": S.promptView = t.dataset.v; renderMain(); break;
+    case "ai-prompt": b && aiPrompt(b); break;
+    case "approve-ai": if(b && S.aiDraft){ touch(b.id, {promptFinal:S.aiDraft}).then(()=>{ S.promptView = "final"; toast("تم اعتماد البرومبت"); }).catch(e=>toast(msgFor(e))); } break;
+  }
+});
+document.addEventListener("click", e => { document.querySelectorAll("details.menu[open]").forEach(d => { if(!d.contains(e.target)) d.removeAttribute("open"); }); });
+window.addEventListener("hashchange", () => { S.promptView = null; S.aiDraft = null; render(); window.scrollTo(0,0); });
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(renderNav, 200); });
+$("#q").addEventListener("input", e => { S.q = e.target.value; const v = route().view; if(v === "brand" && S.q.trim()) location.hash = "home"; else renderMain(); });
+
+/* ---------- boot ---------- */
+const use = n => (window.claude && typeof window.claude.use === "function") ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+/* standalone copy: read-only in-memory store with the same calls the page uses */
+function offlineDb(data){
+  const snapOf = list => ({docs:list.map(d => ({id:d.id, exists:true, data:() => d.data, metadata:{fromCache:false, hasPendingWrites:false}})), size:list.length, empty:!list.length, metadata:{fromCache:false, hasPendingWrites:false}});
+  const listFor = p => p === "brands" ? data.brands : ((/^brands\/([^/]+)\/files$/.exec(p)||[])[1] ? (data.files[p.split("/")[1]] || []) : []);
+  const coll = (p, filt) => { const items = () => listFor(p).filter(d => !filt || filt(d.data));
+    return {onSnapshot:(next) => { setTimeout(() => next(snapOf(items())), 0); return () => {}; }, get:async () => snapOf(items()),
+      where:(f, op, v) => coll(p, d => op === "==" ? d[f] === v : true), doc:() => ({set:async()=>{}, update:async()=>{}, delete:async()=>{}})}; };
+  return {collection:p => coll(p), doc:() => ({set:async()=>{}, update:async()=>{}, delete:async()=>{}, get:async()=>({exists:false, data:()=>undefined})})};
+}
+render();
+(async () => {
+  if(OFF){
+    S.db = offlineDb(OFF);
+    S.downloads = {save: async ({filename, data}) => { const blob = data instanceof Blob ? data : new Blob([data]); const u = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = u; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); return {status:"saved"}; }};
+    subBrands(); return;
+  }
+  const db = await use("db");
+  if(!db){ S.dbState = "nodb"; S.loaded = true; render(); return; }
+  S.db = db; subBrands();
+  const [user, assets, downloads, sample] = await Promise.all([use("user"), use("assets"), use("downloads"), use("sample")]);
+  S.user = user; S.assets = assets; S.downloads = downloads; S.sample = sample;
+  S.canEdit = user ? await user.canEdit().catch(() => false) : false;
+  render();
+})();
+})();
+</script>

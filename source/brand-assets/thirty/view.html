@@ -1,0 +1,21 @@
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>PDF view</title>
+<style>body{margin:0;background:#888;font-family:sans-serif}canvas{display:block;margin:10px auto;background:#fff;max-width:100%}#txt{white-space:pre-wrap;background:#fff;padding:10px;direction:rtl}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
+<div id="pages"></div><pre id="txt"></pre>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+window.PDF = null;
+(async () => {
+  const pdf = await pdfjsLib.getDocument(new URLSearchParams(location.search).get("f") || "thirty-months_brand-guide.pdf").promise; window.PDF = pdf;
+  let all = "PAGES: " + pdf.numPages + "\n";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const pg = await pdf.getPage(i); const vp = pg.getViewport({ scale: 1.2 });
+    const c = document.createElement("canvas"); c.id = "p" + i; c.width = vp.width; c.height = vp.height;
+    document.getElementById("pages").appendChild(c);
+    await pg.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+    const tc = await pg.getTextContent();
+    all += "\n=== PAGE " + i + " (" + Math.round(vp.width) + "x" + Math.round(vp.height) + ")\n" + tc.items.map(t => t.str).join(" ");
+  }
+  document.getElementById("txt").textContent = all; window.DONE = true;
+})().catch(e => { document.getElementById("txt").textContent = "ERR " + e; window.DONE = true; });
+</script></body></html>
